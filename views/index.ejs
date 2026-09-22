@@ -9,7 +9,7 @@
   <div class="max-w-6xl mx-auto px-4 pt-16 pb-24 grid lg:grid-cols-2 gap-12 items-center">
     <div>
       <span class="tag bg-[--mint]">Top up QRIS · instan</span>
-      <h1 class="font-display text-5xl md:text-6xl leading-[0.95] mt-4">
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl leading-[0.95] mt-4">
         BAYAR PAKAI<br>QRIS <span class="text-[--pink]">JADI</span><br>GAMPANG.
       </h1>
       <p class="mt-6 text-lg font-semibold max-w-md">
@@ -23,7 +23,7 @@
         <% } %>
         <a href="/docs" class="btn px-6 py-3 text-lg" style="background:#fff">Lihat Docs API</a>
       </div>
-      <div class="mt-10 flex gap-8 font-display text-xl">
+      <div class="mt-10 flex flex-wrap gap-x-8 gap-y-4 font-display text-xl">
         <div><span class="text-[--pink]">3</span> Metode<br>E-Wallet</div>
         <div><span class="text-[--mint]">~5dt</span> Deposit<br>Instan</div>
         <div><span class="text-[--blue]">24/7</span> Auto<br>Notifikasi</div>
@@ -68,30 +68,13 @@
       <div class="card brutal p-6 bg-[--mint]">
         <div class="font-display text-5xl">02</div>
         <h3 class="font-display text-xl mt-3">Saldo Masuk Otomatis</h3>
-        <p class="mt-2 font-semibold">Begitu pembayaran terdeteksi, saldo langsung masuk ke akun. Kamu juga dapat notifikasi via Telegram.</p>
+        <p class="mt-2 font-semibold">Begitu pembayaran terdeteksi, saldo langsung masuk ke akun. Owner mendapat notifikasi Telegram untuk setiap deposit & penarikan.</p>
       </div>
       <div class="card brutal p-6 bg-[--pink]">
         <div class="font-display text-5xl">03</div>
         <h3 class="font-display text-xl mt-3">Tarik Dana / Integrasi</h3>
         <p class="mt-2 font-semibold">Tarik ke DANA, GoPay, atau ShopeePay (min Rp5.000), atau pakai API untuk kebutuhan web/bot kamu.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="border-t-4 border-[--ink] bg-[--ink] text-[--paper]">
-  <div class="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-8 items-center">
-    <div>
-      <span class="tag bg-[--yellow] text-[--ink]">Untuk Developer</span>
-      <h2 class="font-display text-4xl mt-3">Integrasikan ke Web / Bot kamu</h2>
-      <p class="mt-4 font-semibold opacity-80">Buat API Key di halaman Developer, langsung gunakan endpoint pembayaran & pengecekan status. Cocok untuk toko online, bot telegram, dan lainnya.</p>
-      <pre class="mt-6 bg-[--paper] text-[--ink] brutal p-4 text-sm overflow-x-auto">curl -X GET \
-  "http://localhost:3000/api/payment?api_key=KUNCI&amount=10000&external_id=INV-1"</pre>
-      <a href="/docs" class="btn btn-yellow px-6 py-3 mt-6">Baca Dokumentasi →</a>
-    </div>
-    <div class="grid grid-cols-2 gap-4">
-      <div class="bg-[--blue] brutal-lg p-5">GET<br><span class="font-display text-2xl">/api/payment</span><br><span class="tag bg-[--ink] text-[--paper] mt-2">create</span></div>
-      <div class="bg-[--yellow] brutal-lg p-5 text-[--ink]">GET<br><span class="font-display text-2xl">/api/status</span><br><span class="tag bg-[--ink] text-[--paper] mt-2">check</span></div>
     </div>
   </div>
 </section>

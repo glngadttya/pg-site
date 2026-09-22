@@ -12,8 +12,9 @@
     <a href="/history?type=withdraw" class="btn px-4 py-2 <%= filter === 'withdraw' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'withdraw' ? '' : 'background:#fff' %>">Penarikan</a>
   </div>
 
-  <div class="card brutal-lg mt-6 overflow-hidden">
-    <table class="w-full b-table text-left text-sm">
+  <div class="card brutal-lg mt-6">
+    <div class="overflow-x-auto">
+    <table class="w-full b-table text-left text-sm min-w-[560px]">
       <thead class="bg-[--yellow]">
         <tr>
           <th class="p-3">Tipe</th>
@@ -43,6 +44,7 @@
         <% } %>
       </tbody>
     </table>
+    </div>
   </div>
 </div>
 

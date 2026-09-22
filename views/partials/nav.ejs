@@ -1,21 +1,49 @@
 <header class="sticky top-0 z-50 bg-[--yellow] border-b-4 border-[--ink]">
-  <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3 flex-wrap">
-    <a href="/" class="font-display text-2xl tracking-tight brutal-sm bg-[--ink] text-[--paper] px-3 py-1">VANPAY</a>
-    <nav class="flex items-center gap-2 flex-wrap">
-      <% if (user) { %>
-        <a href="/dashboard" class="btn btn-mint px-3 py-1.5 text-sm">Dashboard</a>
-        <a href="/withdraw" class="btn btn-pink px-3 py-1.5 text-sm">Tarik Dana</a>
-        <a href="/developer" class="btn btn-blue px-3 py-1.5 text-sm">Developer</a>
-        <a href="/history" class="btn px-3 py-1.5 text-sm" style="background:#fff">Riwayat</a>
-        <% if (user.role === 'owner') { %>
-          <a href="/admin/dashboard" class="btn btn-ink px-3 py-1.5 text-sm">Admin</a>
+  <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
+    <a href="/" class="font-display text-xl md:text-2xl tracking-tight brutal-sm bg-[--ink] text-[--paper] px-3 py-1">VANPAY</a>
+    <div class="flex items-center gap-2">
+      <nav id="desktop-nav" class="hidden md:flex items-center gap-2 flex-wrap">
+        <% if (user) { %>
+          <a href="/dashboard" class="btn btn-mint px-3 py-1.5 text-sm">Dashboard</a>
+          <a href="/withdraw" class="btn btn-pink px-3 py-1.5 text-sm">Tarik Dana</a>
+          <a href="/developer" class="btn btn-blue px-3 py-1.5 text-sm">Developer</a>
+          <a href="/history" class="btn px-3 py-1.5 text-sm" style="background:#fff">Riwayat</a>
+          <% if (user.role === 'owner') { %>
+            <a href="/admin/dashboard" class="btn btn-ink text-[--paper] px-3 py-1.5 text-sm">Admin</a>
+          <% } %>
+          <a href="/auth/logout" class="btn px-3 py-1.5 text-sm" style="background:#fff">Logout</a>
+        <% } else { %>
+          <a href="/" class="btn btn-yellow px-3 py-1.5 text-sm">Beranda</a>
+          <a href="/docs" class="btn btn-mint px-3 py-1.5 text-sm">Docs</a>
+          <a href="/auth" class="btn btn-ink text-[--paper] px-3 py-1.5 text-sm">Masuk</a>
         <% } %>
-        <a href="/auth/logout" class="btn px-3 py-1.5 text-sm" style="background:#fff">Logout</a>
-      <% } else { %>
-        <a href="/" class="btn btn-yellow px-3 py-1.5 text-sm">Beranda</a>
-        <a href="/docs" class="btn btn-mint px-3 py-1.5 text-sm">Docs</a>
-        <a href="/auth" class="btn btn-ink text-[--paper] px-3 py-1.5 text-sm">Masuk</a>
+      </nav>
+      <button id="menu-btn" class="md:hidden btn btn-ink px-3 py-2" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden border-t-4 border-[--ink] bg-[--paper] px-4 py-4 space-y-2">
+    <% if (user) { %>
+      <a href="/" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff">Beranda</a>
+      <a href="/dashboard" class="btn btn-mint w-full px-3 py-2.5 text-sm text-left">Dashboard</a>
+      <a href="/withdraw" class="btn btn-pink w-full px-3 py-2.5 text-sm text-left">Tarik Dana</a>
+      <a href="/developer" class="btn btn-blue w-full px-3 py-2.5 text-sm text-left">Developer</a>
+      <a href="/history" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff">Riwayat</a>
+      <a href="/docs" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff">Docs</a>
+      <% if (user.role === 'owner') { %>
+        <a href="/admin/dashboard" class="btn btn-ink text-[--paper] w-full px-3 py-2.5 text-sm text-left">Admin</a>
       <% } %>
-    </nav>
+      <a href="/auth/logout" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff">Logout</a>
+    <% } else { %>
+      <a href="/" class="btn btn-yellow w-full px-3 py-2.5 text-sm text-left">Beranda</a>
+      <a href="/docs" class="btn btn-mint w-full px-3 py-2.5 text-sm text-left">Docs</a>
+      <a href="/auth" class="btn btn-ink text-[--paper] w-full px-3 py-2.5 text-sm text-left">Masuk</a>
+    <% } %>
   </div>
 </header>
+<script>
+  document.getElementById('menu-btn').addEventListener('click', function () {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+</script>

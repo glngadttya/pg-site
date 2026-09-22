@@ -17,7 +17,8 @@
       <div class="flex items-center gap-3"><span class="tag bg-[--mint]">2 · Buat Pembayaran</span><span class="font-display text-xl">GET</span></div>
       <h2 class="font-display text-2xl mt-2">/api/payment</h2>
       <p class="mt-2 font-semibold text-sm">Membuat permintaan pembayaran QRIS baru. Pembayaran kadaluarsa dalam 30 menit.</p>
-      <table class="w-full b-table mt-4 text-sm">
+      <div class="mt-4 overflow-x-auto">
+      <table class="w-full b-table text-sm min-w-[480px]">
         <thead class="bg-[--paper]">
           <tr><th class="p-2 text-left">Parameter</th><th class="p-2 text-left">Tipe</th><th class="p-2 text-left">Keterangan</th></tr>
         </thead>
@@ -27,6 +28,7 @@
           <tr><td class="p-2 font-bold">external_id</td><td class="p-2">string</td><td class="p-2">(opsional) ID transaksi dari sistem kamu</td></tr>
         </tbody>
       </table>
+      </div>
       <pre class="mt-4 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">curl -X GET \
   "http://localhost:3000/api/payment?api_key=KUNCI_LAKU&amount=25000&external_id=INV-001"</pre>
       <div class="mt-3 font-bold text-sm uppercase">Response</div>
@@ -48,7 +50,8 @@
     <section class="card brutal-lg p-6">
       <div class="flex items-center gap-3"><span class="tag bg-[--blue]">3 · Cek Status</span><span class="font-display text-xl">GET</span></div>
       <h2 class="font-display text-2xl mt-2">/api/payment/check</h2>
-      <table class="w-full b-table mt-4 text-sm">
+      <div class="mt-4 overflow-x-auto">
+      <table class="w-full b-table text-sm min-w-[480px]">
         <thead class="bg-[--paper]">
           <tr><th class="p-2 text-left">Parameter</th><th class="p-2 text-left">Tipe</th><th class="p-2 text-left">Keterangan</th></tr>
         </thead>
@@ -56,6 +59,7 @@
           <tr><td class="p-2 font-bold">id</td><td class="p-2">string</td><td class="p-2">Payment ID dari response create</td></tr>
         </tbody>
       </table>
+      </div>
       <pre class="mt-4 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">curl -X GET \
   "http://localhost:3000/api/payment/check?id=PAY_AbCdEf123456XxYyZz"</pre>
       <div class="mt-3 font-bold text-sm uppercase">Response</div>
@@ -75,7 +79,8 @@
     <section class="card brutal-lg p-6">
       <div class="flex items-center gap-3"><span class="tag bg-[--pink]">4 · Cek Saldo</span><span class="font-display text-xl">GET</span></div>
       <h2 class="font-display text-2xl mt-2">/api/balance</h2>
-      <table class="w-full b-table mt-4 text-sm">
+      <div class="mt-4 overflow-x-auto">
+      <table class="w-full b-table text-sm min-w-[480px]">
         <thead class="bg-[--paper]">
           <tr><th class="p-2 text-left">Parameter</th><th class="p-2 text-left">Tipe</th><th class="p-2 text-left">Keterangan</th></tr>
         </thead>
@@ -83,6 +88,7 @@
           <tr><td class="p-2 font-bold">api_key</td><td class="p-2">string</td><td class="p-2">API key akun kamu (wajib)</td></tr>
         </tbody>
       </table>
+      </div>
       <pre class="mt-4 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">curl -X GET \
   "http://localhost:3000/api/balance?api_key=KUNCI_LAKU"</pre>
       <div class="mt-3 font-bold text-sm uppercase">Response</div>
