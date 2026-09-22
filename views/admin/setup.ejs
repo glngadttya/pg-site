@@ -2,7 +2,7 @@
 <%- include('../partials/nav') %>
 
 <div class="max-w-3xl mx-auto px-4 py-10 w-full">
-  <span class="tag bg-[--pink]">Konfigurasi</span>
+  <span class="tag bg-[--pink]"><i class="fa-solid fa-sliders mr-1"></i>Konfigurasi</span>
   <h1 class="font-display text-4xl mt-2">Setup</h1>
   <p class="mt-2 font-semibold">Atur fee penarikan, session GoPay merchant, token bot Telegram, dan kredensial OAuth login.</p>
 
@@ -11,7 +11,7 @@
 
   <form method="POST" action="/admin/setup" class="card brutal-lg mt-6 p-6 space-y-6">
     <div>
-      <h2 class="font-display text-xl">Umum</h2>
+      <h2 class="font-display text-xl"><i class="fa-solid fa-globe mr-2 text-[--blue]"></i>Umum</h2>
       <div class="mt-3 grid sm:grid-cols-2 gap-4">
         <div>
           <label class="font-bold text-sm">Nama Website</label>
@@ -29,7 +29,7 @@
     </div>
 
     <div>
-      <h2 class="font-display text-xl">Session GoPay Merchant</h2>
+      <h2 class="font-display text-xl"><i class="fa-solid fa-qrcode mr-2 text-[--ink]"></i>Session GoPay Merchant</h2>
       <p class="mt-1 text-sm font-semibold opacity-70">Login dulu pakai OTP, atau isi manual langsung. Static QR didapat dari aplikasi GoPay merchant.</p>
       <div class="mt-3 space-y-4">
         <div class="grid sm:grid-cols-2 gap-4">
@@ -61,7 +61,7 @@
     </div>
 
     <div>
-      <h2 class="font-display text-xl">Notifikasi Telegram</h2>
+      <h2 class="font-display text-xl"><i class="fa-brands fa-telegram mr-2 text-[--blue]"></i>Notifikasi Telegram</h2>
       <div class="mt-3 grid sm:grid-cols-2 gap-4">
         <div>
           <label class="font-bold text-sm">Bot Token</label>
@@ -76,7 +76,7 @@
     </div>
 
     <div>
-      <h2 class="font-display text-xl">OAuth Login</h2>
+      <h2 class="font-display text-xl"><i class="fa-solid fa-right-to-bracket mr-2 text-[--yellow]"></i>OAuth Login</h2>
       <div class="mt-3 grid sm:grid-cols-2 gap-4">
         <div>
           <label class="font-bold text-sm">Google Client ID</label>
@@ -95,7 +95,7 @@
       </div>
     </div>
 
-    <button class="btn btn-ink text-[--paper] px-6 py-3">Simpan Pengaturan</button>
+    <button class="btn btn-ink text-[--paper] px-6 py-3"><i class="fa-solid fa-floppy-disk mr-2"></i>Simpan Pengaturan</button>
   </form>
 
   <script>

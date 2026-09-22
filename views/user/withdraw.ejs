@@ -2,7 +2,7 @@
 <%- include('../partials/nav') %>
 
 <div class="max-w-2xl mx-auto px-4 py-10 w-full">
-  <span class="tag bg-[--pink]">Minimal Rp5.000</span>
+  <span class="tag bg-[--pink]"><i class="fa-solid fa-money-bill-transfer mr-1"></i>Minimal Rp5.000</span>
   <h1 class="font-display text-4xl mt-2">Tarik Dana</h1>
   <p class="mt-2 font-semibold">Saldo kamu <b><%= helpers.rupiah(user.balance) %></b>. Biaya layanan <b><%= helpers.rupiah(setup.fee) %></b> per penarikan, dipotong dari saldo.</p>
 
@@ -11,7 +11,7 @@
 
   <form method="POST" action="/withdraw" class="card brutal-lg mt-6 p-6 space-y-4">
     <div>
-      <label class="font-bold text-sm">E-Wallet Tujuan</label>
+      <label class="font-bold text-sm"><i class="fa-solid fa-wallet mr-1"></i>E-Wallet Tujuan</label>
       <select name="method" required class="input mt-1">
         <option value="">— pilih e-wallet —</option>
         <option value="dana">DANA</option>
@@ -20,15 +20,15 @@
       </select>
     </div>
     <div>
-      <label class="font-bold text-sm">Nomor Akun E-Wallet</label>
+      <label class="font-bold text-sm"><i class="fa-solid fa-hashtag mr-1"></i>Nomor Akun E-Wallet</label>
       <input name="account" type="text" inputmode="numeric" required minlength="4" class="input mt-1" placeholder="0838xxxxx">
     </div>
     <div>
-      <label class="font-bold text-sm">Nama Pemilik Akun</label>
+      <label class="font-bold text-sm"><i class="fa-solid fa-user mr-1"></i>Nama Pemilik Akun</label>
       <input name="holder" type="text" required class="input mt-1" placeholder="Nama sesuai rekening">
     </div>
     <div>
-      <label class="font-bold text-sm">Jumlah Penarikan</label>
+      <label class="font-bold text-sm"><i class="fa-solid fa-coins mr-1"></i>Jumlah Penarikan</label>
       <div class="input mt-1 flex items-center gap-2">
         <span class="font-display">Rp</span>
         <input name="amount" type="number" min="5000" step="1000" required class="bg-transparent font-bold outline-none w-full" placeholder="100000">

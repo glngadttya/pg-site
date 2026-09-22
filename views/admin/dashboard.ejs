@@ -2,41 +2,41 @@
 <%- include('../partials/nav') %>
 
 <div class="max-w-6xl mx-auto px-4 py-10 w-full">
-  <span class="tag bg-[--pink]">Owner Panel</span>
+  <span class="tag bg-[--pink]"><i class="fa-solid fa-user-shield mr-1"></i>Owner Panel</span>
   <h1 class="font-display text-4xl mt-2">Dashboard Admin</h1>
 
   <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
     <div class="card brutal-lg bg-[--yellow] p-5">
-      <div class="font-bold text-sm uppercase opacity-70">Total Pengguna</div>
+      <div class="flex items-center gap-2 font-bold text-sm uppercase opacity-70"><i class="fa-solid fa-users"></i>Total Pengguna</div>
       <div class="font-display text-4xl mt-1"><%= data.users %></div>
     </div>
     <div class="card brutal-lg bg-[--mint] p-5">
-      <div class="font-bold text-sm uppercase opacity-70">API Key Aktif</div>
+      <div class="flex items-center gap-2 font-bold text-sm uppercase opacity-70"><i class="fa-solid fa-key"></i>API Key Aktif</div>
       <div class="font-display text-4xl mt-1"><%= data.activeKeys %></div>
     </div>
     <div class="card brutal-lg bg-[--blue] p-5">
-      <div class="font-bold text-sm uppercase opacity-70">Saldo Seluruh User</div>
+      <div class="flex items-center gap-2 font-bold text-sm uppercase opacity-70"><i class="fa-solid fa-wallet"></i>Saldo Seluruh User</div>
       <div class="font-display text-3xl mt-1"><%= helpers.rupiah(data.totalBalance) %></div>
     </div>
     <div class="card brutal-lg bg-[--pink] p-5">
-      <div class="font-bold text-sm uppercase opacity-70">Dana Sukses Masuk</div>
+      <div class="flex items-center gap-2 font-bold text-sm uppercase opacity-70"><i class="fa-solid fa-circle-check"></i>Dana Sukses Masuk</div>
       <div class="font-display text-3xl mt-1"><%= helpers.rupiah(data.totalPaidIn) %></div>
     </div>
     <div class="card brutal-lg bg-[--yellow] p-5">
-      <div class="font-bold text-sm uppercase opacity-70">Deposit Pending</div>
+      <div class="flex items-center gap-2 font-bold text-sm uppercase opacity-70"><i class="fa-solid fa-hourglass-half"></i>Deposit Pending</div>
       <div class="font-display text-4xl mt-1"><%= data.pendingPayments %></div>
     </div>
     <div class="card brutal-lg bg-[--pink] p-5">
-      <div class="font-bold text-sm uppercase opacity-70">Penarikan Pending</div>
+      <div class="flex items-center gap-2 font-bold text-sm uppercase opacity-70"><i class="fa-solid fa-clock"></i>Penarikan Pending</div>
       <div class="font-display text-4xl mt-1"><%= data.pendingWithdraws %></div>
       <a href="/admin/withdraw" class="btn px-3 py-1 text-xs mt-3" style="background:#fff">Proses →</a>
     </div>
     <div class="card brutal-lg bg-[--paper] p-5">
-      <div class="font-bold text-sm uppercase opacity-70">Total Deposit (Semua)</div>
+      <div class="flex items-center gap-2 font-bold text-sm uppercase opacity-70"><i class="fa-solid fa-arrow-down-to-bracket"></i>Total Deposit (Semua)</div>
       <div class="font-display text-3xl mt-1"><%= helpers.rupiah(data.totalDeposit) %></div>
     </div>
     <div class="card brutal-lg bg-[--paper] p-5">
-      <div class="font-bold text-sm uppercase opacity-70">Nominal Penarikan Pending</div>
+      <div class="flex items-center gap-2 font-bold text-sm uppercase opacity-70"><i class="fa-solid fa-arrow-up-from-bracket"></i>Nominal Penarikan Pending</div>
       <div class="font-display text-3xl mt-1"><%= helpers.rupiah(data.totalWithdrawPending) %></div>
     </div>
   </div>
@@ -44,7 +44,7 @@
   <div class="mt-10 grid lg:grid-cols-2 gap-6">
     <div class="card brutal p-6">
       <div class="flex items-center justify-between">
-        <h2 class="font-display text-2xl">Deposit Terakhir</h2>
+        <h2 class="font-display text-2xl"><i class="fa-solid fa-arrow-down-to-bracket text-[--mint] mr-2"></i>Deposit Terakhir</h2>
         <a href="/history" class="text-sm font-bold underline">Lihat</a>
       </div>
       <div class="mt-4 space-y-3">
@@ -69,7 +69,7 @@
 
     <div class="card brutal p-6">
       <div class="flex items-center justify-between">
-        <h2 class="font-display text-2xl">Penarikan Terakhir</h2>
+        <h2 class="font-display text-2xl"><i class="fa-solid fa-arrow-up-from-bracket text-[--pink] mr-2"></i>Penarikan Terakhir</h2>
         <a href="/admin/withdraw" class="text-sm font-bold underline">Proses</a>
       </div>
       <div class="mt-4 space-y-3">

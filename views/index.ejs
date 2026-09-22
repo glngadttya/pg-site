@@ -20,16 +20,16 @@
       </p>
       <div class="mt-8 flex flex-wrap gap-4">
         <% if (user) { %>
-          <a href="/dashboard" class="btn btn-yellow px-6 py-3 text-lg">Ke Dashboard →</a>
+          <a href="/dashboard" class="btn btn-yellow px-6 py-3 text-lg"><i class="fa-solid fa-gauge-high mr-2"></i>Ke Dashboard →</a>
         <% } else { %>
-          <a href="/auth" class="btn btn-yellow px-6 py-3 text-lg">Masuk Sekarang →</a>
+          <a href="/auth" class="btn btn-yellow px-6 py-3 text-lg"><i class="fa-solid fa-right-to-bracket mr-2"></i>Masuk Sekarang →</a>
         <% } %>
-        <a href="/docs" class="btn px-6 py-3 text-lg" style="background:#fff">Lihat Docs API</a>
+        <a href="/docs" class="btn px-6 py-3 text-lg" style="background:#fff"><i class="fa-solid fa-book mr-2"></i>Lihat Docs API</a>
       </div>
-      <div class="mt-10 flex flex-wrap gap-x-8 gap-y-4 font-display text-xl">
-        <div><span class="text-[--pink]">3</span> Metode<br>E-Wallet</div>
-        <div><span class="text-[--mint]">~5dt</span> Deposit<br>Instan</div>
-        <div><span class="text-[--blue]">24/7</span> Auto<br>Notifikasi</div>
+      <div class="mt-10 flex flex-wrap gap-x-8 gap-y-4 font-display text-lg">
+        <div><i class="fa-solid fa-wallet text-2xl text-[--pink] mr-2 align-middle"></i><span class="text-[--pink]">3</span> Metode<br>E-Wallet</div>
+        <div><i class="fa-solid fa-bolt text-2xl text-[--mint] mr-2 align-middle"></i>~5dt Deposit<br>Instan</div>
+        <div><i class="fa-solid fa-bell text-2xl text-[--blue] mr-2 align-middle"></i>24/7 Auto<br>Notifikasi</div>
       </div>
     </div>
 
@@ -64,17 +64,26 @@
     <h2 class="font-display text-4xl">CARA KERJA</h2>
     <div class="mt-8 grid md:grid-cols-3 gap-6">
       <div class="card brutal p-6 bg-[--yellow]">
-        <div class="font-display text-5xl">01</div>
+        <div class="flex items-center gap-3">
+          <span class="font-display text-5xl">01</span>
+          <i class="fa-solid fa-qrcode text-3xl"></i>
+        </div>
         <h3 class="font-display text-xl mt-3">Login & Deposit</h3>
         <p class="mt-2 font-semibold">Login pakai akun Google atau GitHub, lalu pilih nominal top up. QRIS langsung muncul untuk kamu scan & bayar.</p>
       </div>
       <div class="card brutal p-6 bg-[--mint]">
-        <div class="font-display text-5xl">02</div>
+        <div class="flex items-center gap-3">
+          <span class="font-display text-5xl">02</span>
+          <i class="fa-solid fa-bolt text-3xl"></i>
+        </div>
         <h3 class="font-display text-xl mt-3">Saldo Masuk Otomatis</h3>
         <p class="mt-2 font-semibold">Begitu pembayaran terdeteksi, saldo langsung masuk ke akun.</p>
       </div>
       <div class="card brutal p-6 bg-[--pink]">
-        <div class="font-display text-5xl">03</div>
+        <div class="flex items-center gap-3">
+          <span class="font-display text-5xl">03</span>
+          <i class="fa-solid fa-money-bill-transfer text-3xl"></i>
+        </div>
         <h3 class="font-display text-xl mt-3">Tarik Dana / Integrasi</h3>
         <p class="mt-2 font-semibold">Tarik ke DANA, GoPay, atau ShopeePay, atau pakai API untuk kebutuhan website atau bot kamu.</p>
       </div>
@@ -83,7 +92,7 @@
 </section>
 
 <footer class="border-t-4 border-[--ink] bg-[--paper]">
-  <div class="max-w-6xl mx-auto px-4 py-6">
+  <div class="max-w-6xl mx-auto px-4 py-6 text-center">
     <span class="font-semibold text-sm">© <%= new Date().getFullYear() %> <%= setup.name %> — QRIS Payment Gateway</span>
   </div>
 </footer>

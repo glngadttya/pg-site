@@ -7,9 +7,9 @@
   <% if (msg) { %><div class="mt-4 bg-[--mint] brutal-sm p-3 font-semibold text-sm"><%= msg %></div><% } %>
 
   <div class="mt-6 flex gap-3 flex-wrap">
-    <a href="/history?type=all" class="btn px-4 py-2 <%= filter === 'all' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'all' ? '' : 'background:#fff' %>">Semua</a>
-    <a href="/history?type=deposit" class="btn px-4 py-2 <%= filter === 'deposit' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'deposit' ? '' : 'background:#fff' %>">Deposit</a>
-    <a href="/history?type=withdraw" class="btn px-4 py-2 <%= filter === 'withdraw' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'withdraw' ? '' : 'background:#fff' %>">Penarikan</a>
+    <a href="/history?type=all" class="btn px-4 py-2 <%= filter === 'all' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'all' ? '' : 'background:#fff' %>"><i class="fa-solid fa-layer-group mr-1.5"></i>Semua</a>
+    <a href="/history?type=deposit" class="btn px-4 py-2 <%= filter === 'deposit' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'deposit' ? '' : 'background:#fff' %>"><i class="fa-solid fa-arrow-down mr-1.5"></i>Deposit</a>
+    <a href="/history?type=withdraw" class="btn px-4 py-2 <%= filter === 'withdraw' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'withdraw' ? '' : 'background:#fff' %>"><i class="fa-solid fa-arrow-up mr-1.5"></i>Penarikan</a>
   </div>
 
   <div class="card brutal-lg mt-6">

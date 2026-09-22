@@ -2,37 +2,52 @@
 <%- include('partials/nav') %>
 
 <div class="max-w-3xl mx-auto px-4 py-12 w-full">
-  <span class="tag bg-[--blue]">API Reference</span>
+  <span class="tag bg-[--blue]"><i class="fa-solid fa-book mr-1"></i>API Reference</span>
   <h1 class="font-display text-5xl mt-2">Dokumentasi API</h1>
-  <p class="mt-3 font-semibold">Integrasikan pembayaran QRIS ke web / bot kamu. Semua endpoint memakai <code class="bg-[--ink] text-[--paper] px-1 rounded-sm">curl -X GET</code> dan mengembalikan <code class="bg-[--ink] text-[--paper] px-1 rounded-sm">application/json</code>.</p>
+  <p class="mt-3 font-semibold">Integrasikan pembayaran QRIS ke web / bot kamu. Semua endpoint memakai <code class="bg-[--ink] text-[--paper] px-1.5 py-0.5 rounded-sm font-mono text-sm">curl -X GET</code> dan mengembalikan <code class="bg-[--ink] text-[--paper] px-1.5 py-0.5 rounded-sm font-mono text-sm">application/json</code>.</p>
 
   <div class="mt-10 space-y-8">
+
     <section class="card brutal-lg p-6 bg-[--yellow]">
-      <span class="tag bg-[--ink] text-[--paper]">1 · Kunci API</span>
+      <span class="tag bg-[--ink] text-[--paper]"><i class="fa-solid fa-key mr-1"></i>1 · Kunci API</span>
       <h2 class="font-display text-2xl mt-2">Dapatkan API Key</h2>
-      <p class="mt-3 font-semibold text-sm">Login, klik menu <b>Developer</b>, lalu tekan <b>Buat API Key Baru</b>. Pakai value tersebut sebagai parameter <code>api_key</code> di semua request.</p>
+      <p class="mt-3 font-semibold text-sm">Login, klik menu <b>Developer</b>, lalu tekan <b>Buat API Key Baru</b>. Pakai value tersebut sebagai parameter <code class="bg-[--ink] text-[--paper] px-1.5 rounded-sm font-mono text-xs">api_key</code> di semua request.</p>
     </section>
 
     <section class="card brutal-lg p-6">
-      <div class="flex items-center gap-3"><span class="tag bg-[--mint]">2 · Buat Pembayaran</span><span class="font-display text-xl">GET</span></div>
-      <h2 class="font-display text-2xl mt-2">/api/payment</h2>
-      <p class="mt-2 font-semibold text-sm">Membuat permintaan pembayaran QRIS baru. Pembayaran kadaluarsa dalam 30 menit.</p>
-      <div class="mt-4 overflow-x-auto">
-      <table class="w-full b-table text-sm min-w-[480px]">
+      <div class="flex items-center gap-3">
+        <span class="tag bg-[--mint]"><i class="fa-solid fa-qrcode mr-1"></i>2 · Buat Pembayaran</span>
+        <span class="font-display text-base bg-[--ink] text-[--paper] px-2 py-1 rounded-sm">GET /api/payment</span>
+      </div>
+      <p class="mt-3 font-semibold text-sm">Membuat permintaan pembayaran QRIS baru. Pembayaran kadaluwarsa dalam 30 menit.</p>
+      <table class="w-full b-table mt-4 text-sm">
         <thead class="bg-[--paper]">
           <tr><th class="p-2 text-left">Parameter</th><th class="p-2 text-left">Tipe</th><th class="p-2 text-left">Keterangan</th></tr>
         </thead>
         <tbody>
-          <tr><td class="p-2 font-bold">api_key</td><td class="p-2">string</td><td class="p-2">API key akun kamu (wajib)</td></tr>
-          <tr><td class="p-2 font-bold">amount</td><td class="p-2">int</td><td class="p-2">Nominal 1.000 – 5.000.000 (IDR)</td></tr>
-          <tr><td class="p-2 font-bold">external_id</td><td class="p-2">string</td><td class="p-2">(opsional) ID transaksi dari sistem kamu</td></tr>
+          <tr><td class="p-2 font-bold font-mono text-xs">api_key</td><td class="p-2">string</td><td class="p-2">API key akun kamu (wajib)</td></tr>
+          <tr><td class="p-2 font-bold font-mono text-xs">amount</td><td class="p-2">int</td><td class="p-2">Nominal 1.000 – 5.000.000 (IDR)</td></tr>
+          <tr><td class="p-2 font-bold font-mono text-xs">external_id</td><td class="p-2">string</td><td class="p-2">(opsional) ID transaksi dari sistem kamu</td></tr>
         </tbody>
       </table>
+
+      <div class="mt-4 font-bold text-sm uppercase"><i class="fa-solid fa-terminal mr-1"></i>Request</div>
+      <div class="term mt-2">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="ml-2">vanpay — curl</span>
+        </div>
+        <pre class="term-pre"><code class="language-bash">curl -X GET \
+  "http://localhost:3000/api/payment?api_key=KUNCI_LAKU&amp;amount=25000&amp;external_id=INV-001"</code></pre>
       </div>
-      <pre class="mt-4 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">curl -X GET \
-  "http://localhost:3000/api/payment?api_key=KUNCI_LAKU&amount=25000&external_id=INV-001"</pre>
-      <div class="mt-3 font-bold text-sm uppercase">Response</div>
-      <pre class="mt-1 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">{
+
+      <div class="mt-4 font-bold text-sm uppercase"><i class="fa-solid fa-file-arrow-down mr-1"></i>Response · 200 OK</div>
+      <div class="term mt-2">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="ml-2">application/json</span>
+        </div>
+        <pre class="term-pre"><code class="language-json">{
   "success": true,
   "data": {
     "id": "PAY_AbCdEf123456XxYyZz",
@@ -43,27 +58,43 @@
     "payment_url": "http://localhost:3000/payment?id=PAY_AbCdEf123456XxYyZz",
     "expired_at": "2026-09-22T12:34:56.000Z"
   }
-}</pre>
-      <p class="mt-3 text-sm font-semibold">👉 Arahkan pelanggan kamu ke <code class="bg-[--ink] text-[--paper] px-1 rounded-sm">payment_url</code>, atau tampilkan <code class="bg-[--ink] text-[--paper] px-1 rounded-sm">qr_url</code> langsung, lalu poll status pakai endpoint berikut.</p>
+}</code></pre>
+      </div>
+
+      <p class="mt-3 text-sm font-semibold"><i class="fa-solid fa-arrow-right text-[--pink] mr-1"></i>Arahkan pelanggan kamu ke <code class="bg-[--ink] text-[--paper] px-1.5 rounded-sm font-mono text-xs">payment_url</code>, atau tampilkan <code class="bg-[--ink] text-[--paper] px-1.5 rounded-sm font-mono text-xs">qr_url</code> langsung, lalu poll status pakai endpoint berikut.</p>
     </section>
 
     <section class="card brutal-lg p-6">
-      <div class="flex items-center gap-3"><span class="tag bg-[--blue]">3 · Cek Status</span><span class="font-display text-xl">GET</span></div>
-      <h2 class="font-display text-2xl mt-2">/api/payment/check</h2>
-      <div class="mt-4 overflow-x-auto">
-      <table class="w-full b-table text-sm min-w-[480px]">
+      <div class="flex items-center gap-3">
+        <span class="tag bg-[--blue]"><i class="fa-solid fa-circle-check mr-1"></i>3 · Cek Status</span>
+        <span class="font-display text-base bg-[--ink] text-[--paper] px-2 py-1 rounded-sm">GET /api/payment/check</span>
+      </div>
+      <table class="w-full b-table mt-4 text-sm">
         <thead class="bg-[--paper]">
           <tr><th class="p-2 text-left">Parameter</th><th class="p-2 text-left">Tipe</th><th class="p-2 text-left">Keterangan</th></tr>
         </thead>
         <tbody>
-          <tr><td class="p-2 font-bold">id</td><td class="p-2">string</td><td class="p-2">Payment ID dari response create</td></tr>
+          <tr><td class="p-2 font-bold font-mono text-xs">id</td><td class="p-2">string</td><td class="p-2">Payment ID dari response create</td></tr>
         </tbody>
       </table>
+
+      <div class="mt-4 font-bold text-sm uppercase"><i class="fa-solid fa-terminal mr-1"></i>Request</div>
+      <div class="term mt-2">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="ml-2">vanpay — curl</span>
+        </div>
+        <pre class="term-pre"><code class="language-bash">curl -X GET \
+  "http://localhost:3000/api/payment/check?id=PAY_AbCdEf123456XxYyZz"</code></pre>
       </div>
-      <pre class="mt-4 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">curl -X GET \
-  "http://localhost:3000/api/payment/check?id=PAY_AbCdEf123456XxYyZz"</pre>
-      <div class="mt-3 font-bold text-sm uppercase">Response</div>
-      <pre class="mt-1 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">{
+
+      <div class="mt-4 font-bold text-sm uppercase"><i class="fa-solid fa-file-arrow-down mr-1"></i>Response · 200 OK</div>
+      <div class="term mt-2">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="ml-2">application/json</span>
+        </div>
+        <pre class="term-pre"><code class="language-json">{
   "success": true,
   "data": {
     "id": "PAY_AbCdEf123456XxYyZz",
@@ -72,27 +103,43 @@
     "status": "paid",
     "paid_at": "2026-09-22T12:40:01.000Z"
   }
-}</pre>
-      <p class="mt-3 text-sm font-semibold">💰 Status <code class="bg-[--ink] text-[--paper] px-1 rounded-sm">paid</code> berarti pembayaran diterima dan saldo akun kamu sudah bertambah.</p>
+}</code></pre>
+      </div>
+
+      <p class="mt-3 text-sm font-semibold"><i class="fa-solid fa-wallet text-[--mint] mr-1"></i>Status <code class="bg-[--ink] text-[--paper] px-1.5 rounded-sm font-mono text-xs">paid</code> berarti pembayaran diterima dan saldo akun kamu sudah bertambah.</p>
     </section>
 
     <section class="card brutal-lg p-6">
-      <div class="flex items-center gap-3"><span class="tag bg-[--pink]">4 · Cek Saldo</span><span class="font-display text-xl">GET</span></div>
-      <h2 class="font-display text-2xl mt-2">/api/balance</h2>
-      <div class="mt-4 overflow-x-auto">
-      <table class="w-full b-table text-sm min-w-[480px]">
+      <div class="flex items-center gap-3">
+        <span class="tag bg-[--pink]"><i class="fa-solid fa-coins mr-1"></i>4 · Cek Saldo</span>
+        <span class="font-display text-base bg-[--ink] text-[--paper] px-2 py-1 rounded-sm">GET /api/balance</span>
+      </div>
+      <table class="w-full b-table mt-4 text-sm">
         <thead class="bg-[--paper]">
           <tr><th class="p-2 text-left">Parameter</th><th class="p-2 text-left">Tipe</th><th class="p-2 text-left">Keterangan</th></tr>
         </thead>
         <tbody>
-          <tr><td class="p-2 font-bold">api_key</td><td class="p-2">string</td><td class="p-2">API key akun kamu (wajib)</td></tr>
+          <tr><td class="p-2 font-bold font-mono text-xs">api_key</td><td class="p-2">string</td><td class="p-2">API key akun kamu (wajib)</td></tr>
         </tbody>
       </table>
+
+      <div class="mt-4 font-bold text-sm uppercase"><i class="fa-solid fa-terminal mr-1"></i>Request</div>
+      <div class="term mt-2">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="ml-2">vanpay — curl</span>
+        </div>
+        <pre class="term-pre"><code class="language-bash">curl -X GET \
+  "http://localhost:3000/api/balance?api_key=KUNCI_LAKU"</code></pre>
       </div>
-      <pre class="mt-4 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">curl -X GET \
-  "http://localhost:3000/api/balance?api_key=KUNCI_LAKU"</pre>
-      <div class="mt-3 font-bold text-sm uppercase">Response</div>
-      <pre class="mt-1 bg-[--ink] text-[--paper] brutal-sm p-4 text-sm overflow-x-auto">{
+
+      <div class="mt-4 font-bold text-sm uppercase"><i class="fa-solid fa-file-arrow-down mr-1"></i>Response · 200 OK</div>
+      <div class="term mt-2">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="ml-2">application/json</span>
+        </div>
+        <pre class="term-pre"><code class="language-json">{
   "success": true,
   "data": {
     "username": "glngadttya",
@@ -100,8 +147,10 @@
     "currency": "IDR",
     "formatted": "Rp250.000"
   }
-}</pre>
+}</code></pre>
+      </div>
     </section>
+
   </div>
 </div>
 

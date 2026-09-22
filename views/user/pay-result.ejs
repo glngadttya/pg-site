@@ -9,9 +9,9 @@
       <a href="/" class="btn btn-yellow px-5 py-2.5 mt-6">Kembali ke Beranda</a>
     </div>
   <% } else { %>
-  <span class="tag bg-[--blue]">Payment ID: <%= payment.id %></span>
+  <span class="tag bg-[--blue]"><i class="fa-solid fa-barcode mr-1"></i>Payment ID: <%= payment.id %></span>
   <h1 class="font-display text-4xl mt-3">Scan & Bayar</h1>
-  <p class="mt-2 font-semibold">Gunakan aplikasi e-wallet atau m-banking yang mendukung QRIS untuk melakukan pembayaran.</p>
+  <p class="mt-2 font-semibold"><i class="fa-solid fa-qrcode text-[--pink] mr-1"></i>Gunakan aplikasi e-wallet atau m-banking yang mendukung QRIS untuk melakukan pembayaran.</p>
 
   <div class="card brutal-lg mt-6 p-6 text-center bg-[--yellow]">
     <div class="font-bold uppercase tracking-wide">Total Pembayaran</div>
@@ -24,15 +24,15 @@
 
     <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
       <div class="bg-[--paper] brutal-sm p-3">
-        <div class="text-xs font-bold opacity-60">Keterangan</div>
+        <div class="text-xs font-bold opacity-60"><i class="fa-solid fa-tag mr-1"></i>Keterangan</div>
         <div class="font-bold text-sm truncate"><%= payment.source === 'api' && payment.external_id ? payment.external_id : 'Top Up Saldo' %></div>
       </div>
       <div class="bg-[--paper] brutal-sm p-3">
-        <div class="text-xs font-bold opacity-60">Status</div>
+        <div class="text-xs font-bold opacity-60"><i class="fa-solid fa-circle-info mr-1"></i>Status</div>
         <div id="status" class="font-bold text-sm capitalize"><%= payment.status %></div>
       </div>
       <div class="bg-[--paper] brutal-sm p-3">
-        <div class="text-xs font-bold opacity-60">Kedaluwarsa</div>
+        <div class="text-xs font-bold opacity-60"><i class="fa-solid fa-hourglass-half mr-1"></i>Kedaluwarsa</div>
         <div class="font-bold text-sm"><%= new Date(payment.exp_at).toLocaleTimeString('id-ID') %></div>
       </div>
     </div>

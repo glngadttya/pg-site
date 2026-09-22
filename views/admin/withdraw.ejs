@@ -2,7 +2,7 @@
 <%- include('../partials/nav') %>
 
 <div class="max-w-6xl mx-auto px-4 py-10 w-full">
-  <span class="tag bg-[--pink]">Owner Panel</span>
+  <span class="tag bg-[--pink]"><i class="fa-solid fa-user-shield mr-1"></i>Owner Panel</span>
   <h1 class="font-display text-4xl mt-2">Penarikan Dana</h1>
   <p class="mt-2 font-semibold">Proses penarikan user secara manual ke e-wallet. Jika ditolak, saldo user dikembalikan.</p>
 
@@ -10,10 +10,10 @@
   <% if (err) { %><div class="mt-4 bg-[--pink] brutal-sm p-3 font-semibold text-sm text-[--ink]"><%= err %></div><% } %>
 
   <div class="mt-6 flex gap-3 flex-wrap">
-    <a href="/admin/withdraw?filter=all" class="btn px-4 py-2 <%= filter === 'all' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'all' ? '' : 'background:#fff' %>">Semua</a>
-    <a href="/admin/withdraw?filter=pending" class="btn px-4 py-2 <%= filter === 'pending' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'pending' ? '' : 'background:#fff' %>">Pending</a>
-    <a href="/admin/withdraw?filter=approved" class="btn px-4 py-2 <%= filter === 'approved' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'approved' ? '' : 'background:#fff' %>">Approved</a>
-    <a href="/admin/withdraw?filter=rejected" class="btn px-4 py-2 <%= filter === 'rejected' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'rejected' ? '' : 'background:#fff' %>">Rejected</a>
+    <a href="/admin/withdraw?filter=all" class="btn px-4 py-2 <%= filter === 'all' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'all' ? '' : 'background:#fff' %>"><i class="fa-solid fa-layer-group mr-1.5"></i>Semua</a>
+    <a href="/admin/withdraw?filter=pending" class="btn px-4 py-2 <%= filter === 'pending' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'pending' ? '' : 'background:#fff' %>"><i class="fa-solid fa-hourglass-half mr-1.5"></i>Pending</a>
+    <a href="/admin/withdraw?filter=approved" class="btn px-4 py-2 <%= filter === 'approved' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'approved' ? '' : 'background:#fff' %>"><i class="fa-solid fa-circle-check mr-1.5"></i>Approved</a>
+    <a href="/admin/withdraw?filter=rejected" class="btn px-4 py-2 <%= filter === 'rejected' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'rejected' ? '' : 'background:#fff' %>"><i class="fa-solid fa-ban mr-1.5"></i>Rejected</a>
   </div>
 
   <div class="card brutal-lg mt-6 overflow-x-auto">
