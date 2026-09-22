@@ -1,0 +1,80 @@
+<%- include('../partials/head', { title: 'Pembayaran' }) %>
+<%- include('../partials/nav') %>
+
+<div class="max-w-xl mx-auto px-4 py-12 w-full">
+  <% if (!payment) { %>
+    <div class="card brutal-lg p-8 text-center bg-[--pink]">
+      <div class="font-display text-3xl">Pembayaran Tidak Ditemukan</div>
+      <p class="mt-3 font-semibold">Link pembayaran tidak valid atau sudah kedaluwarsa.</p>
+      <a href="/" class="btn btn-yellow px-5 py-2.5 mt-6">Kembali ke Beranda</a>
+    </div>
+  <% } else { %>
+  <span class="tag bg-[--blue]">Payment ID: <%= payment.id %></span>
+  <h1 class="font-display text-4xl mt-3">Scan & Bayar</h1>
+  <p class="mt-2 font-semibold">Gunakan aplikasi e-wallet atau m-banking yang mendukung QRIS untuk melakukan pembayaran.</p>
+
+  <div class="card brutal-lg mt-6 p-6 text-center bg-[--yellow]">
+    <div class="font-bold uppercase tracking-wide">Total Pembayaran</div>
+    <div class="font-display text-5xl mt-1"><%= helpers.rupiah(payment.amount) %></div>
+
+    <div id="qr-box" class="mt-6 bg-white brutal-lg inline-block p-3">
+      <img src="<%= payment.qr_url %>" alt="QRIS" class="w-56 h-56 object-contain">
+    </div>
+    <div class="mt-3 text-sm font-semibold">Scan QRIS di atas untuk membayar</div>
+
+    <div class="mt-5 grid grid-cols-3 gap-3 text-left">
+      <div class="bg-[--paper] brutal-sm p-3">
+        <div class="text-xs font-bold opacity-60">Keterangan</div>
+        <div class="font-bold text-sm truncate"><%= payment.source === 'api' && payment.external_id ? payment.external_id : 'Top Up Saldo' %></div>
+      </div>
+      <div class="bg-[--paper] brutal-sm p-3">
+        <div class="text-xs font-bold opacity-60">Status</div>
+        <div id="status" class="font-bold text-sm capitalize"><%= payment.status %></div>
+      </div>
+      <div class="bg-[--paper] brutal-sm p-3">
+        <div class="text-xs font-bold opacity-60">Kedaluwarsa</div>
+        <div class="font-bold text-sm"><%= new Date(payment.exp_at).toLocaleTimeString('id-ID') %></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="paid-panel" class="card brutal-lg mt-6 p-8 text-center bg-[--mint] hidden">
+    <div class="font-display text-3xl">Pembayaran Berhasil ✦</div>
+    <p class="mt-2 font-bold">Terima kasih! Status telah diperbarui.</p>
+    <div class="flex justify-center gap-3 mt-5">
+      <% if (owner) { %>
+        <a href="/dashboard" class="btn btn-ink text-[--paper] px-5 py-2.5">Ke Dashboard</a>
+      <% } %>
+      <a href="/" class="btn px-5 py-2.5" style="background:#fff">Kembali</a>
+    </div>
+  </div>
+
+  <% if (payment.status === 'pending') { %>
+  <script>
+    var payId = '<%= payment.id %>';
+    var statusEl = document.getElementById('status');
+    var paidPanel = document.getElementById('paid-panel');
+    var interval = setInterval(async function () {
+      try {
+        var r = await fetch('/payment/status?id=' + payId);
+        var d = await r.json();
+        if (d.success) {
+          statusEl.textContent = d.status;
+          if (d.status === 'paid') {
+            clearInterval(interval);
+            document.querySelector('#qr-box').classList.add('opacity-20');
+            paidPanel.classList.remove('hidden');
+          } else if (d.status === 'expired') {
+            clearInterval(interval);
+            document.querySelector('#qr-box').classList.add('opacity-20');
+            statusEl.textContent = 'expired';
+          }
+        }
+      } catch (e) {}
+    }, 3000);
+  </script>
+  <% } %>
+  <% } %>
+</div>
+
+<%- include('../partials/foot') %>

@@ -1,0 +1,14 @@
+{
+  "name": "VANPAY",
+  "fee": 1000,
+  "static_qr": "",
+  "gopay_token": "",
+  "gopay_phone": "",
+  "telegram_token": "",
+  "telegram_chat_id": "",
+  "google_client_id": "",
+  "google_client_secret": "",
+  "github_client_id": "",
+  "github_client_secret": "",
+  "base_url": "http://localhost:3000"
+}

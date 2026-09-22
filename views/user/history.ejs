@@ -1,0 +1,49 @@
+<%- include('../partials/head', { title: 'Riwayat' }) %>
+<%- include('../partials/nav') %>
+
+<div class="max-w-4xl mx-auto px-4 py-10 w-full">
+  <span class="tag bg-[--blue]">Semua Transaksi</span>
+  <h1 class="font-display text-4xl mt-2">Riwayat</h1>
+  <% if (msg) { %><div class="mt-4 bg-[--mint] brutal-sm p-3 font-semibold text-sm"><%= msg %></div><% } %>
+
+  <div class="mt-6 flex gap-3 flex-wrap">
+    <a href="/history?type=all" class="btn px-4 py-2 <%= filter === 'all' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'all' ? '' : 'background:#fff' %>">Semua</a>
+    <a href="/history?type=deposit" class="btn px-4 py-2 <%= filter === 'deposit' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'deposit' ? '' : 'background:#fff' %>">Deposit</a>
+    <a href="/history?type=withdraw" class="btn px-4 py-2 <%= filter === 'withdraw' ? 'btn-ink text-[--paper]' : '' %>" style="<%= filter === 'withdraw' ? '' : 'background:#fff' %>">Penarikan</a>
+  </div>
+
+  <div class="card brutal-lg mt-6 overflow-hidden">
+    <table class="w-full b-table text-left text-sm">
+      <thead class="bg-[--yellow]">
+        <tr>
+          <th class="p-3">Tipe</th>
+          <th class="p-3">Ref</th>
+          <th class="p-3">Metode</th>
+          <th class="p-3">Jumlah</th>
+          <th class="p-3">Status</th>
+          <th class="p-3">Waktu</th>
+        </tr>
+      </thead>
+      <tbody class="bg-[--paper]">
+        <% if (rows.length === 0) { %>
+          <tr><td colspan="6" class="p-6 text-center font-semibold">Tidak ada data.</td></tr>
+        <% } else { %>
+          <% rows.forEach(function (r) { %>
+          <tr>
+            <td class="p-3 font-bold"><%= r.kind === 'deposit' ? 'Deposit' : 'Tarik Dana' %></td>
+            <td class="p-3 font-mono text-xs"><%= r.ref %></td>
+            <td class="p-3 capitalize"><%= r.method %></td>
+            <td class="p-3 font-bold"><%= helpers.rupiah(r.amount) %></td>
+            <td class="p-3">
+              <span class="tag <%= r.status === 'paid' || r.status === 'approved' ? 'bg-[--mint]' : r.status === 'pending' ? 'bg-[--yellow]' : 'bg-[--pink]' %>"><%= r.status %></span>
+            </td>
+            <td class="p-3 text-xs font-semibold"><%= new Date(r.created_at).toLocaleString('id-ID') %></td>
+          </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/foot') %>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= title ? title + ' · ' + setup.name : setup.name %></title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#111; --bg:#f6f3ea; --paper:#fffdf5; --yellow:#ffd400; --mint:#46e6a7; --pink:#ff6fbe; --blue:#4cc9f0; }
+* { font-family:'Space Grotesk', system-ui, sans-serif; }
+body { background:var(--bg); color:var(--ink); }
+.font-display { font-family:'Archivo Black', system-ui, sans-serif; }
+.brutal { border:3px solid var(--ink); border-radius:6px; box-shadow:6px 6px 0 var(--ink); }
+.brutal-lg { border:4px solid var(--ink); border-radius:8px; box-shadow:8px 8px 0 var(--ink); }
+.brutal-sm { border:2px solid var(--ink); border-radius:4px; box-shadow:3px 3px 0 var(--ink); }
+.btn { border:3px solid var(--ink); border-radius:6px; box-shadow:4px 4px 0 var(--ink); font-weight:700; transition:all .12s ease; display:inline-block; cursor:pointer; }
+.btn:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--ink); }
+.btn:active { transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
+.btn-yellow { background:var(--yellow); }
+.btn-ink { background:var(--ink); color:var(--paper); }
+.btn-mint { background:var(--mint); }
+.btn-pink { background:var(--pink); }
+.btn-blue { background:var(--blue); }
+.input { border:3px solid var(--ink); border-radius:6px; box-shadow:3px 3px 0 var(--ink); padding:.55rem .8rem; width:100%; background:#fff; outline:none; font-weight:600; }
+.input:focus { box-shadow:5px 5px 0 var(--ink); }
+.card { border:3px solid var(--ink); border-radius:8px; background:var(--paper); }
+.chip { border:2px solid var(--ink); border-radius:999px; box-shadow:2px 2px 0 var(--ink); }
+.tag { display:inline-block; border:2px solid var(--ink); border-radius:4px; padding:.05rem .35rem; font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+table.b-table td, table.b-table th { border:2px solid var(--ink); }
+</style>
+</head>
+<body class="min-h-screen flex flex-col">

@@ -1,0 +1,58 @@
+<%- include('../partials/head', { title: 'Developer' }) %>
+<%- include('../partials/nav') %>
+
+<div class="max-w-4xl mx-auto px-4 py-10 w-full">
+  <span class="tag bg-[--mint]">API Developer</span>
+  <h1 class="font-display text-4xl mt-2">Developer</h1>
+  <p class="mt-2 font-semibold">Buat API Key untuk mengintegrasikan pembayaran QRIS ke web atau bot kamu. Maksimal 5 key aktif.</p>
+
+  <% if (msg) { %><div class="mt-4 bg-[--mint] brutal-sm p-3 font-semibold text-sm"><%= msg %></div><% } %>
+  <% if (err) { %><div class="mt-4 bg-[--pink] brutal-sm p-3 font-semibold text-sm text-[--ink]"><%= err %></div><% } %>
+
+  <form method="POST" action="/developer/apikey" class="mt-6">
+    <button class="btn btn-yellow px-6 py-3">+ Buat API Key Baru</button>
+  </form>
+
+  <div class="card brutal-lg mt-6 overflow-hidden">
+    <table class="w-full b-table text-left text-sm">
+      <thead class="bg-[--blue]">
+        <tr>
+          <th class="p-3">API Key</th>
+          <th class="p-3">Dibuat</th>
+          <th class="p-3">Status</th>
+          <th class="p-3">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="bg-[--paper]">
+        <% var keys = user.api_keys || []; %>
+        <% if (keys.length === 0) { %>
+          <tr><td colspan="4" class="p-6 text-center font-semibold">Belum ada API key.</td></tr>
+        <% } else { %>
+          <% keys.forEach(function (k) { %>
+          <tr>
+            <td class="p-3 font-mono text-xs"><%= k.revoked ? k.key.substring(0, 38) + '…' : k.key %></td>
+            <td class="p-3 text-xs font-semibold"><%= new Date(k.created_at).toLocaleString('id-ID') %></td>
+            <td class="p-3"><span class="tag <%= k.revoked ? 'bg-[--pink]' : 'bg-[--mint]' %>"><%= k.revoked ? 'revoked' : 'aktif' %></span></td>
+            <td class="p-3">
+              <% if (!k.revoked) { %>
+                <form method="POST" action="/developer/apikey/revoke" onsubmit="return confirm('Cabut API key ini?');">
+                  <input type="hidden" name="id" value="<%= k.id %>">
+                  <button class="btn px-3 py-1 text-xs" style="background:#fff">Revoke</button>
+                </form>
+              <% } else { %>—<% } %>
+            </td>
+          </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card brutal mt-6 p-5 bg-[--yellow]">
+    <div class="font-display text-lg">Contoh penggunaan</div>
+    <pre class="mt-2 text-sm bg-white brutal-sm p-3 overflow-x-auto">curl -X GET "http://localhost:3000/api/payment?api_key=KUNCI_LAKU&amount=25000&external_id=INV-001"</pre>
+    <a href="/docs" class="btn btn-ink text-[--paper] px-4 py-2 mt-4">Baca Dokumentasi Lengkap →</a>
+  </div>
+</div>
+
+<%- include('../partials/foot') %>

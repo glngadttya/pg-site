@@ -1,0 +1,97 @@
+<%- include('../partials/head', { title: 'Admin Dashboard' }) %>
+<%- include('../partials/nav') %>
+
+<div class="max-w-6xl mx-auto px-4 py-10 w-full">
+  <span class="tag bg-[--pink]">Owner Panel</span>
+  <h1 class="font-display text-4xl mt-2">Dashboard Admin</h1>
+
+  <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="card brutal-lg bg-[--yellow] p-5">
+      <div class="font-bold text-sm uppercase opacity-70">Total Pengguna</div>
+      <div class="font-display text-4xl mt-1"><%= data.users %></div>
+    </div>
+    <div class="card brutal-lg bg-[--mint] p-5">
+      <div class="font-bold text-sm uppercase opacity-70">API Key Aktif</div>
+      <div class="font-display text-4xl mt-1"><%= data.activeKeys %></div>
+    </div>
+    <div class="card brutal-lg bg-[--blue] p-5">
+      <div class="font-bold text-sm uppercase opacity-70">Saldo Seluruh User</div>
+      <div class="font-display text-3xl mt-1"><%= helpers.rupiah(data.totalBalance) %></div>
+    </div>
+    <div class="card brutal-lg bg-[--pink] p-5">
+      <div class="font-bold text-sm uppercase opacity-70">Dana Sukses Masuk</div>
+      <div class="font-display text-3xl mt-1"><%= helpers.rupiah(data.totalPaidIn) %></div>
+    </div>
+    <div class="card brutal-lg bg-[--yellow] p-5">
+      <div class="font-bold text-sm uppercase opacity-70">Deposit Pending</div>
+      <div class="font-display text-4xl mt-1"><%= data.pendingPayments %></div>
+    </div>
+    <div class="card brutal-lg bg-[--pink] p-5">
+      <div class="font-bold text-sm uppercase opacity-70">Penarikan Pending</div>
+      <div class="font-display text-4xl mt-1"><%= data.pendingWithdraws %></div>
+      <a href="/admin/withdraw" class="btn px-3 py-1 text-xs mt-3" style="background:#fff">Proses →</a>
+    </div>
+    <div class="card brutal-lg bg-[--paper] p-5">
+      <div class="font-bold text-sm uppercase opacity-70">Total Deposit (Semua)</div>
+      <div class="font-display text-3xl mt-1"><%= helpers.rupiah(data.totalDeposit) %></div>
+    </div>
+    <div class="card brutal-lg bg-[--paper] p-5">
+      <div class="font-bold text-sm uppercase opacity-70">Nominal Penarikan Pending</div>
+      <div class="font-display text-3xl mt-1"><%= helpers.rupiah(data.totalWithdrawPending) %></div>
+    </div>
+  </div>
+
+  <div class="mt-10 grid lg:grid-cols-2 gap-6">
+    <div class="card brutal p-6">
+      <div class="flex items-center justify-between">
+        <h2 class="font-display text-2xl">Deposit Terakhir</h2>
+        <a href="/history" class="text-sm font-bold underline">Lihat</a>
+      </div>
+      <div class="mt-4 space-y-3">
+        <% if (recentPayments.length === 0) { %>
+          <div class="bg-[--paper] brutal-sm p-4 font-semibold text-sm">Belum ada deposit.</div>
+        <% } else { %>
+          <% recentPayments.forEach(function (p) { %>
+          <div class="flex items-center justify-between bg-[--paper] brutal-sm p-3">
+            <div>
+              <div class="font-bold text-sm font-mono"><%= p.id %></div>
+              <div class="text-xs font-semibold opacity-60"><%= new Date(p.created_at).toLocaleString('id-ID') %></div>
+            </div>
+            <div class="text-right">
+              <div class="font-display"><%= helpers.rupiah(p.amount) %></div>
+              <span class="tag <%= p.status === 'paid' ? 'bg-[--mint]' : p.status === 'pending' ? 'bg-[--yellow]' : 'bg-[--pink]' %>"><%= p.status %></span>
+            </div>
+          </div>
+          <% }) %>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="card brutal p-6">
+      <div class="flex items-center justify-between">
+        <h2 class="font-display text-2xl">Penarikan Terakhir</h2>
+        <a href="/admin/withdraw" class="text-sm font-bold underline">Proses</a>
+      </div>
+      <div class="mt-4 space-y-3">
+        <% if (recentWithdraws.length === 0) { %>
+          <div class="bg-[--paper] brutal-sm p-4 font-semibold text-sm">Belum ada penarikan.</div>
+        <% } else { %>
+          <% recentWithdraws.forEach(function (w) { %>
+          <div class="flex items-center justify-between bg-[--paper] brutal-sm p-3">
+            <div>
+              <div class="font-bold text-sm font-mono"><%= w.id %></div>
+              <div class="text-xs font-semibold opacity-60 capitalize"><%= w.method %> · <%= new Date(w.created_at).toLocaleString('id-ID') %></div>
+            </div>
+            <div class="text-right">
+              <div class="font-display"><%= helpers.rupiah(w.amount) %></div>
+              <span class="tag <%= w.status === 'approved' ? 'bg-[--mint]' : w.status === 'pending' ? 'bg-[--yellow]' : 'bg-[--pink]' %>"><%= w.status %></span>
+            </div>
+          </div>
+          <% }) %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/foot') %>

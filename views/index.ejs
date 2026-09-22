@@ -1,0 +1,106 @@
+<%- include('partials/head', { title: 'Home' }) %>
+<%- include('partials/nav') %>
+
+<section class="relative">
+  <div class="bg-[--yellow] border-b-4 border-[--ink] py-2 text-sm font-bold uppercase tracking-widest text-center overflow-hidden whitespace-nowrap">
+    QRIS Payment Gateway ✦ Deposit Instan ✦ Withdraw E-Wallet ✦ API Developer ✦ QRIS Payment Gateway ✦ Deposit Instan ✦ Withdraw E-Wallet ✦ API Developer ✦
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 pt-16 pb-24 grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <span class="tag bg-[--mint]">Top up QRIS · instan</span>
+      <h1 class="font-display text-5xl md:text-6xl leading-[0.95] mt-4">
+        BAYAR PAKAI<br>QRIS <span class="text-[--pink]">JADI</span><br>GAMPANG.
+      </h1>
+      <p class="mt-6 text-lg font-semibold max-w-md">
+        Platform pembayaran QRIS online. Deposit saldo via QRIS mendekati instan, tarik dana ke e-wallet favoritmu, dan integrasikan ke web/bot dengan API sederhana.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <% if (user) { %>
+          <a href="/dashboard" class="btn btn-yellow px-6 py-3 text-lg">Ke Dashboard →</a>
+        <% } else { %>
+          <a href="/auth" class="btn btn-yellow px-6 py-3 text-lg">Masuk Sekarang →</a>
+        <% } %>
+        <a href="/docs" class="btn px-6 py-3 text-lg" style="background:#fff">Lihat Docs API</a>
+      </div>
+      <div class="mt-10 flex gap-8 font-display text-xl">
+        <div><span class="text-[--pink]">3</span> Metode<br>E-Wallet</div>
+        <div><span class="text-[--mint]">~5dt</span> Deposit<br>Instan</div>
+        <div><span class="text-[--blue]">24/7</span> Auto<br>Notifikasi</div>
+      </div>
+    </div>
+
+    <div class="relative">
+      <div class="card brutal-lg bg-[--blue] p-6 rotate-2">
+        <div class="bg-[--paper] brutal p-4">
+          <div class="flex items-center justify-between">
+            <span class="font-display">VANPAY</span>
+            <span class="tag bg-[--mint]">QRIS</span>
+          </div>
+          <div class="mt-4 aspect-square max-w-[260px] mx-auto bg-white brutal p-2 grid place-items-center">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=vanpay-qris" alt="QRIS" class="w-full">
+          </div>
+          <div class="mt-4 flex justify-between items-center">
+            <span class="font-bold">Saldo</span>
+            <span class="font-display text-2xl">Rp10.000</span>
+          </div>
+        </div>
+        <div class="flex justify-between gap-3 mt-4">
+          <div class="flex-1 bg-[--paper] brutal-sm p-3 text-center font-bold">DANA</div>
+          <div class="flex-1 bg-[--paper] brutal-sm p-3 text-center font-bold">GOPAY</div>
+          <div class="flex-1 bg-[--paper] brutal-sm p-3 text-center font-bold">SHOPEE PAY</div>
+        </div>
+      </div>
+      <div class="absolute -bottom-6 -left-4 bg-[--pink] brutal px-4 py-2 font-display -rotate-3">NEARLY INSTANT ✦</div>
+    </div>
+  </div>
+</section>
+
+<section class="border-t-4 border-[--ink] bg-[--paper]">
+  <div class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="font-display text-4xl">CARA KERJA</h2>
+    <div class="mt-8 grid md:grid-cols-3 gap-6">
+      <div class="card brutal p-6 bg-[--yellow]">
+        <div class="font-display text-5xl">01</div>
+        <h3 class="font-display text-xl mt-3">Login & Deposit</h3>
+        <p class="mt-2 font-semibold">Login pakai akun Google atau GitHub, lalu pilih nominal top up. QRIS langsung muncul untuk kamu scan & bayar.</p>
+      </div>
+      <div class="card brutal p-6 bg-[--mint]">
+        <div class="font-display text-5xl">02</div>
+        <h3 class="font-display text-xl mt-3">Saldo Masuk Otomatis</h3>
+        <p class="mt-2 font-semibold">Begitu pembayaran terdeteksi, saldo langsung masuk ke akun. Kamu juga dapat notifikasi via Telegram.</p>
+      </div>
+      <div class="card brutal p-6 bg-[--pink]">
+        <div class="font-display text-5xl">03</div>
+        <h3 class="font-display text-xl mt-3">Tarik Dana / Integrasi</h3>
+        <p class="mt-2 font-semibold">Tarik ke DANA, GoPay, atau ShopeePay (min Rp5.000), atau pakai API untuk kebutuhan web/bot kamu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="border-t-4 border-[--ink] bg-[--ink] text-[--paper]">
+  <div class="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-8 items-center">
+    <div>
+      <span class="tag bg-[--yellow] text-[--ink]">Untuk Developer</span>
+      <h2 class="font-display text-4xl mt-3">Integrasikan ke Web / Bot kamu</h2>
+      <p class="mt-4 font-semibold opacity-80">Buat API Key di halaman Developer, langsung gunakan endpoint pembayaran & pengecekan status. Cocok untuk toko online, bot telegram, dan lainnya.</p>
+      <pre class="mt-6 bg-[--paper] text-[--ink] brutal p-4 text-sm overflow-x-auto">curl -X GET \
+  "http://localhost:3000/api/payment?api_key=KUNCI&amount=10000&external_id=INV-1"</pre>
+      <a href="/docs" class="btn btn-yellow px-6 py-3 mt-6">Baca Dokumentasi →</a>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="bg-[--blue] brutal-lg p-5">GET<br><span class="font-display text-2xl">/api/payment</span><br><span class="tag bg-[--ink] text-[--paper] mt-2">create</span></div>
+      <div class="bg-[--yellow] brutal-lg p-5 text-[--ink]">GET<br><span class="font-display text-2xl">/api/status</span><br><span class="tag bg-[--ink] text-[--paper] mt-2">check</span></div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t-4 border-[--ink] bg-[--paper]">
+  <div class="max-w-6xl mx-auto px-4 py-6 flex flex-wrap gap-4 items-center justify-between">
+    <span class="font-display">VANPAY ✦</span>
+    <span class="font-semibold text-sm">© <%= new Date().getFullYear() %> <%= setup.name %> — QRIS Payment Gateway</span>
+  </div>
+</footer>
+
+<%- include('partials/foot') %>

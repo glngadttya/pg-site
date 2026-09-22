@@ -1,0 +1,42 @@
+<%- include('../partials/head', { title: 'Tarik Dana' }) %>
+<%- include('../partials/nav') %>
+
+<div class="max-w-2xl mx-auto px-4 py-10 w-full">
+  <span class="tag bg-[--pink]">Minimal Rp5.000</span>
+  <h1 class="font-display text-4xl mt-2">Tarik Dana</h1>
+  <p class="mt-2 font-semibold">Saldo kamu <b><%= helpers.rupiah(user.balance) %></b>. Biaya layanan <b><%= helpers.rupiah(setup.fee) %></b> per penarikan, dipotong dari saldo.</p>
+
+  <% if (msg) { %><div class="mt-4 bg-[--mint] brutal-sm p-3 font-semibold text-sm"><%= msg %></div><% } %>
+  <% if (err) { %><div class="mt-4 bg-[--pink] brutal-sm p-3 font-semibold text-sm text-[--ink]"><%= err %></div><% } %>
+
+  <form method="POST" action="/withdraw" class="card brutal-lg mt-6 p-6 space-y-4">
+    <div>
+      <label class="font-bold text-sm">E-Wallet Tujuan</label>
+      <select name="method" required class="input mt-1">
+        <option value="">— pilih e-wallet —</option>
+        <option value="dana">DANA</option>
+        <option value="gopay">GoPay</option>
+        <option value="shopeepay">ShopeePay</option>
+      </select>
+    </div>
+    <div>
+      <label class="font-bold text-sm">Nomor Akun E-Wallet</label>
+      <input name="account" type="text" inputmode="numeric" required minlength="4" class="input mt-1" placeholder="0838xxxxx">
+    </div>
+    <div>
+      <label class="font-bold text-sm">Nama Pemilik Akun</label>
+      <input name="holder" type="text" required class="input mt-1" placeholder="Nama sesuai rekening">
+    </div>
+    <div>
+      <label class="font-bold text-sm">Jumlah Penarikan</label>
+      <div class="input mt-1 flex items-center gap-2">
+        <span class="font-display">Rp</span>
+        <input name="amount" type="number" min="5000" step="1000" required class="bg-transparent font-bold outline-none w-full" placeholder="100000">
+      </div>
+      <div class="mt-2 text-xs font-semibold opacity-70">Total terpotong dari saldo: jumlah + biaya layanan (<%= helpers.rupiah(setup.fee) %>).</div>
+    </div>
+    <button class="btn btn-pink px-6 py-3">Kirim Permintaan Penarikan</button>
+  </form>
+</div>
+
+<%- include('../partials/foot') %>

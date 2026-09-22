@@ -1,0 +1,130 @@
+<%- include('../partials/head', { title: 'Setup' }) %>
+<%- include('../partials/nav') %>
+
+<div class="max-w-3xl mx-auto px-4 py-10 w-full">
+  <span class="tag bg-[--pink]">Konfigurasi</span>
+  <h1 class="font-display text-4xl mt-2">Setup</h1>
+  <p class="mt-2 font-semibold">Atur fee penarikan, session GoPay merchant, token bot Telegram, dan kredensial OAuth login.</p>
+
+  <% if (msg) { %><div class="mt-4 bg-[--mint] brutal-sm p-3 font-semibold text-sm"><%= msg %></div><% } %>
+  <% if (err) { %><div class="mt-4 bg-[--pink] brutal-sm p-3 font-semibold text-sm text-[--ink]"><%= err %></div><% } %>
+
+  <form method="POST" action="/admin/setup" class="card brutal-lg mt-6 p-6 space-y-6">
+    <div>
+      <h2 class="font-display text-xl">Umum</h2>
+      <div class="mt-3 grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="font-bold text-sm">Nama Website</label>
+          <input name="name" class="input mt-1" value="<%= setup.name %>">
+        </div>
+        <div>
+          <label class="font-bold text-sm">Fee Penarikan (Rp)</label>
+          <input name="fee" type="number" min="0" step="500" class="input mt-1" value="<%= setup.fee %>">
+        </div>
+      </div>
+      <div class="mt-4">
+        <label class="font-bold text-sm">Base URL (redirect OAuth)</label>
+        <input name="base_url" class="input mt-1" value="<%= setup.base_url %>" placeholder="http://localhost:3000">
+      </div>
+    </div>
+
+    <div>
+      <h2 class="font-display text-xl">Session GoPay Merchant</h2>
+      <p class="mt-1 text-sm font-semibold opacity-70">Login dulu pakai OTP, atau isi manual langsung. Static QR didapat dari aplikasi GoPay merchant.</p>
+      <div class="mt-3 space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="font-bold text-sm">Login GoPay — Nomor HP Merchant</label>
+            <div class="flex gap-2 mt-1">
+              <input id="gopay-phone" name="gopay_phone" class="input" value="<%= setup.gopay_phone %>" placeholder="856xxxxx tanpa +62">
+              <button type="button" id="btn-otp" class="btn btn-yellow px-4 whitespace-nowrap">Kirim OTP</button>
+            </div>
+          </div>
+          <div>
+            <label class="font-bold text-sm">Kode OTP</label>
+            <div class="flex gap-2 mt-1">
+              <input id="gopay-otp" class="input" placeholder="123456">
+              <button type="button" id="btn-verify" class="btn btn-mint px-4 whitespace-nowrap">Verifikasi</button>
+            </div>
+          </div>
+        </div>
+        <div id="otp-msg" class="hidden bg-[--yellow] brutal-sm p-3 font-semibold text-sm"></div>
+        <div>
+          <label class="font-bold text-sm">Static QR Merchant</label>
+          <textarea name="static_qr" rows="3" class="input mt-1 font-mono text-xs" placeholder="isi dengan kode static QR GoPay merchant..."><%= setup.static_qr %></textarea>
+        </div>
+        <div>
+          <label class="font-bold text-sm">Gopay Token / Session Verification</label>
+          <textarea name="gopay_token" rows="2" class="input mt-1 font-mono text-xs" placeholder="token hasil verifikasi OTP..."><%= setup.gopay_token %></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="font-display text-xl">Notifikasi Telegram</h2>
+      <div class="mt-3 grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="font-bold text-sm">Bot Token</label>
+          <input name="telegram_token" class="input mt-1 font-mono text-xs" value="<%= setup.telegram_token %>" placeholder="123456:ABC-DEF...">
+        </div>
+        <div>
+          <label class="font-bold text-sm">Chat ID Tujuan (admin)</label>
+          <input name="telegram_chat_id" class="input mt-1 font-mono text-xs" value="<%= setup.telegram_chat_id %>" placeholder="123456789">
+        </div>
+      </div>
+      <p class="mt-2 text-xs font-semibold opacity-70">Notifikasi dikirim saat ada deposit sukses dan ada request penarikan baru.</p>
+    </div>
+
+    <div>
+      <h2 class="font-display text-xl">OAuth Login</h2>
+      <div class="mt-3 grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="font-bold text-sm">Google Client ID</label>
+          <input name="google_client_id" class="input mt-1 font-mono text-xs" value="<%= setup.google_client_id %>">
+          <label class="font-bold text-sm mt-3 block">Google Client Secret</label>
+          <input name="google_client_secret" class="input mt-1 font-mono text-xs" value="<%= setup.google_client_secret %>">
+          <p class="mt-2 text-xs font-semibold opacity-70">Redirect URI: <%= setup.base_url %>/auth/google/callback</p>
+        </div>
+        <div>
+          <label class="font-bold text-sm">GitHub Client ID</label>
+          <input name="github_client_id" class="input mt-1 font-mono text-xs" value="<%= setup.github_client_id %>">
+          <label class="font-bold text-sm mt-3 block">GitHub Client Secret</label>
+          <input name="github_client_secret" class="input mt-1 font-mono text-xs" value="<%= setup.github_client_secret %>">
+          <p class="mt-2 text-xs font-semibold opacity-70">Redirect URI: <%= setup.base_url %>/auth/github/callback</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-ink text-[--paper] px-6 py-3">Simpan Pengaturan</button>
+  </form>
+
+  <script>
+    var otpMsg = document.getElementById('otp-msg');
+    function showMsg(text, ok) {
+      otpMsg.textContent = text;
+      otpMsg.className = 'brutal-sm p-3 font-semibold text-sm ' + (ok ? 'bg-[--mint]' : 'bg-[--pink]');
+    }
+    document.getElementById('btn-otp').addEventListener('click', async function () {
+      otpMsg.className = 'hidden';
+      var res = await fetch('/admin/gopay/otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: document.getElementById('gopay-phone').value })
+      });
+      var d = await res.json();
+      showMsg(d.success ? d.message : d.message, d.success);
+    });
+    document.getElementById('btn-verify').addEventListener('click', async function () {
+      otpMsg.className = 'hidden';
+      var res = await fetch('/admin/gopay/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ otp: document.getElementById('gopay-otp').value })
+      });
+      var d = await res.json();
+      showMsg(d.success ? d.message : d.message, d.success);
+    });
+  </script>
+</div>
+
+<%- include('../partials/foot') %>

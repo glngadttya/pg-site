@@ -1,0 +1,3 @@
+node_modules/
+library/database/*.json
+!library/database/setup.example.json

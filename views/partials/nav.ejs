@@ -1,0 +1,21 @@
+<header class="sticky top-0 z-50 bg-[--yellow] border-b-4 border-[--ink]">
+  <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3 flex-wrap">
+    <a href="/" class="font-display text-2xl tracking-tight brutal-sm bg-[--ink] text-[--paper] px-3 py-1">VANPAY</a>
+    <nav class="flex items-center gap-2 flex-wrap">
+      <% if (user) { %>
+        <a href="/dashboard" class="btn btn-mint px-3 py-1.5 text-sm">Dashboard</a>
+        <a href="/withdraw" class="btn btn-pink px-3 py-1.5 text-sm">Tarik Dana</a>
+        <a href="/developer" class="btn btn-blue px-3 py-1.5 text-sm">Developer</a>
+        <a href="/history" class="btn px-3 py-1.5 text-sm" style="background:#fff">Riwayat</a>
+        <% if (user.role === 'owner') { %>
+          <a href="/admin/dashboard" class="btn btn-ink px-3 py-1.5 text-sm">Admin</a>
+        <% } %>
+        <a href="/auth/logout" class="btn px-3 py-1.5 text-sm" style="background:#fff">Logout</a>
+      <% } else { %>
+        <a href="/" class="btn btn-yellow px-3 py-1.5 text-sm">Beranda</a>
+        <a href="/docs" class="btn btn-mint px-3 py-1.5 text-sm">Docs</a>
+        <a href="/auth" class="btn btn-ink text-[--paper] px-3 py-1.5 text-sm">Masuk</a>
+      <% } %>
+    </nav>
+  </div>
+</header>
