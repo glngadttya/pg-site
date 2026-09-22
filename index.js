@@ -12,7 +12,7 @@ const telegram = require('./library/telegram');
 const {
     readDB, writeDB, loadSetup, saveSetup, uid, rupiah, nowIso,
     genApiKey, authUser, createSession, destroySession, findUserByKey,
-    updateUser, requireAuth, requireAdmin
+    updateUser, requireAuth, requireAdmin, FEE_TIERS, transactionFee
 } = f;
 
 const app = express();
@@ -31,7 +31,8 @@ app.use(cookieParser());
 app.use(function (req, res, next) {
     res.locals.user = authUser(req);
     res.locals.setup = loadSetup();
-    res.locals.helpers = { rupiah };
+    res.locals.helpers = { rupiah, transactionFee };
+    res.locals.feeTiers = FEE_TIERS;
     res.locals.msg = null;
     res.locals.err = null;
     next();
@@ -278,7 +279,7 @@ app.post('/withdraw', requireAuth, async (req, res) => {
     const setup = loadSetup();
     const user = res.locals.user;
     const amount = parseInt(req.body.amount, 10);
-    const fee = parseInt(setup.fee, 10) || 0;
+    const fee = transactionFee(amount);
     const method = String(req.body.method || '').toLowerCase();
     const account = String(req.body.account || '').trim();
     const holder = String(req.body.holder || '').trim();
@@ -480,7 +481,6 @@ app.get('/admin/setup', requireAdmin, (req, res) => {
 app.post('/admin/setup', requireAdmin, (req, res) => {
     const s = loadSetup();
     s.name = String(req.body.name || s.name || 'VANPAY').trim() || 'VANPAY';
-    s.fee = Math.max(0, parseInt(req.body.fee, 10) || 0);
     s.static_qr = String(req.body.static_qr || '').trim();
     s.gopay_token = String(req.body.gopay_token || '').trim();
     s.gopay_phone = String(req.body.gopay_phone || '').trim();

@@ -1,6 +1,5 @@
 {
   "name": "VANPAY",
-  "fee": 1000,
   "static_qr": "",
   "gopay_token": "",
   "gopay_phone": "",

@@ -4,7 +4,7 @@
 <div class="max-w-3xl mx-auto px-4 py-10 w-full">
   <span class="tag bg-[--pink]"><i class="fa-solid fa-sliders mr-1"></i>Konfigurasi</span>
   <h1 class="font-display text-4xl mt-2">Setup</h1>
-  <p class="mt-2 font-semibold">Atur fee penarikan, session GoPay merchant, token bot Telegram, dan kredensial OAuth login.</p>
+  <p class="mt-2 font-semibold">Atur session GoPay merchant, token bot Telegram, dan kredensial OAuth login. Biaya layanan dihitung otomatis sesuai nominal penarikan.</p>
 
   <% if (msg) { %><div class="mt-4 bg-[--mint] brutal-sm p-3 font-semibold text-sm"><%= msg %></div><% } %>
   <% if (err) { %><div class="mt-4 bg-[--pink] brutal-sm p-3 font-semibold text-sm text-[--ink]"><%= err %></div><% } %>
@@ -18,8 +18,8 @@
           <input name="name" class="input mt-1" value="<%= setup.name %>">
         </div>
         <div>
-          <label class="font-bold text-sm">Fee Penarikan (Rp)</label>
-          <input name="fee" type="number" min="0" step="500" class="input mt-1" value="<%= setup.fee %>">
+          <label class="font-bold text-sm">Biaya Layanan (otomatis)</label>
+          <div class="input mt-1 opacity-60 cursor-not-allowed" title="Dihitung otomatis sesuai nominal">Rp100 – Rp10.000</div>
         </div>
       </div>
       <div class="mt-4">

@@ -26,7 +26,6 @@ function writeDB(name, data) {
 function loadSetup() {
     return readDB('setup', {
         name: 'VANPAY',
-        fee: 1000,
         static_qr: '',
         gopay_token: '',
         gopay_phone: '',
@@ -105,6 +104,25 @@ function updateUser(userId, patch) {
     return true;
 }
 
+const FEE_TIERS = [
+    { label: '1 – 20.000', min: 1000, max: 20000, fee: 100 },
+    { label: '20.001 – 30.000', min: 20001, max: 30000, fee: 200 },
+    { label: '30.001 – 40.000', min: 30001, max: 40000, fee: 300 },
+    { label: '40.001 – 50.000', min: 40001, max: 50000, fee: 400 },
+    { label: '50.001 – 100.000', min: 50001, max: 100000, fee: 500 },
+    { label: '100.001 – 200.000', min: 100001, max: 200000, fee: 1000 },
+    { label: '200.001 – 300.000', min: 200001, max: 300000, fee: 2000 },
+    { label: '300.001 – 400.000', min: 300001, max: 400000, fee: 3000 },
+    { label: '400.001 – 500.000', min: 400001, max: 500000, fee: 4000 },
+    { label: '500.000 ke atas', min: 500001, max: Infinity, fee: 10000 }
+];
+
+function transactionFee(amount) {
+    const a = parseInt(amount, 10) || 0;
+    const tier = FEE_TIERS.find((t) => a >= t.min && a <= t.max);
+    return tier ? tier.fee : 0;
+}
+
 function requireAuth(req, res, next) {
     const user = authUser(req);
     if (!user) {
@@ -125,5 +143,6 @@ function requireAdmin(req, res, next) {
 module.exports = {
     readDB, writeDB, loadSetup, saveSetup, uid, rupiah, nowIso,
     genApiKey, authUser, createSession, destroySession,
-    findUserByKey, updateUser, requireAuth, requireAdmin
+    findUserByKey, updateUser, requireAuth, requireAdmin,
+    FEE_TIERS, transactionFee
 };
