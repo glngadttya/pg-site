@@ -19,6 +19,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const EWALLETS = ['dana', 'gopay', 'shopeepay'];
 const PAYMENT_TTL = 30 * 60 * 1000;
+const MEDIA_TTL = 10 * 60 * 1000;
+const MEDIA_DIR = gopay.MEDIA_DIR;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -80,6 +82,25 @@ setInterval(async () => {
         await checkAndSettle(p);
     }
 }, 5000);
+
+function cleanMedia() {
+    try {
+        fs.mkdirSync(MEDIA_DIR, { recursive: true });
+        const used = new Set(readDB('payments', [])
+            .filter((p) => p.status === 'pending' && p.qr_file)
+            .map((p) => p.qr_file));
+        const now = Date.now();
+        for (const file of fs.readdirSync(MEDIA_DIR)) {
+            if (file === '.gitkeep' || used.has(file)) continue;
+            const fp = path.join(MEDIA_DIR, file);
+            try {
+                if (now - fs.statSync(fp).mtimeMs > MEDIA_TTL) fs.unlinkSync(fp);
+            } catch (e) { }
+        }
+    } catch (e) { }
+}
+cleanMedia();
+setInterval(cleanMedia, 60 * 1000);
 
 function redirectUri(setup, provider) {
     return (setup.base_url || '').replace(/\/$/, '') + '/auth/' + provider + '/callback';
@@ -229,6 +250,7 @@ app.post('/dashboard/deposit', requireAuth, async (req, res) => {
             amount,
             status: 'pending',
             qr_url: qr.url,
+            qr_file: qr.filename,
             qr_created: qr.created_at,
             credited: false,
             created_at: nowIso(),
@@ -364,6 +386,7 @@ app.get('/api/payment', async (req, res) => {
             amount,
             status: 'pending',
             qr_url: qr.url,
+            qr_file: qr.filename,
             qr_created: qr.created_at,
             credited: false,
             created_at: nowIso(),
@@ -379,7 +402,7 @@ app.get('/api/payment', async (req, res) => {
                 external_id: payment.external_id,
                 amount: payment.amount,
                 status: payment.status,
-                qr_url: payment.qr_url,
+                qr_url: base + payment.qr_url,
                 payment_url: base + '/payment?id=' + payment.id,
                 expired_at: payment.exp_at
             }
@@ -540,6 +563,23 @@ app.post('/admin/withdraw/:id/:action', requireAdmin, (req, res) => {
     }
     writeDB('withdrawals', withdrawals);
     res.redirect('/admin/withdraw?msg=' + encodeURIComponent('Penarikan berhasil diproses.'));
+});
+
+function mediaType(buf) {
+    if (buf.length > 3 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return 'image/png';
+    if (buf.length > 2 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return 'image/jpeg';
+    if (buf.length > 4 && buf[0] === 0x3c) return 'image/svg+xml';
+    return 'application/octet-stream';
+}
+
+app.get('/media/:file', (req, res) => {
+    const name = path.basename(req.params.file);
+    const fp = path.join(MEDIA_DIR, name);
+    if (!fs.existsSync(fp)) return res.status(404).send('Not found');
+    const buf = fs.readFileSync(fp);
+    res.set('Content-Type', mediaType(buf));
+    res.set('Cache-Control', 'public, max-age=300');
+    res.send(buf);
 });
 
 app.use((req, res) => {

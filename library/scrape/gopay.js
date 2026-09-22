@@ -1,5 +1,8 @@
 const axios = require('axios');
-const FormData = require('form-data');
+const fs = require('fs');
+const path = require('path');
+
+const MEDIA_DIR = path.join(__dirname, '..', 'database', 'media');
 
 async function sendOTP(phone) {
     if (!phone) throw new Error('Phone is required');
@@ -37,25 +40,12 @@ async function verifyOTP(otp, otpToken) {
     return response.data.data;
 }
 
-async function uploadToAthars(buffer, filename) {
-    const formData = new FormData();
-    formData.append('file', buffer, { filename });
-
-    const response = await axios.post('https://athars.space/upload.php', formData, {
-        headers: {
-            ...formData.getHeaders(),
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
-        timeout: 30000
-    });
-
-    const url = response.data.trim();
-    if (url && url.startsWith('https://athars.space/uploads/')) {
-        return url;
-    }
-    throw new Error('Upload to athars.space failed');
+async function saveLocalQRIS(buffer, filename) {
+    if (!buffer) throw new Error('Image buffer is required');
+    fs.mkdirSync(MEDIA_DIR, { recursive: true });
+    const filePath = path.join(MEDIA_DIR, filename);
+    fs.writeFileSync(filePath, buffer);
+    return '/media/' + filename;
 }
 
 async function createQRIS(amount, staticQr) {
@@ -74,12 +64,12 @@ async function createQRIS(amount, staticQr) {
 
     const qrBuffer = Buffer.from(response.data);
     const timestamp = Date.now();
-    const filename = `QRIS-${timestamp}.png`;
-    const url = await uploadToAthars(qrBuffer, filename);
+    const filename = `QRIS-${timestamp}.jpg`;
+    const url = await saveLocalQRIS(qrBuffer, filename);
 
     return {
-        url: url,
         filename: filename,
+        url: url,
         created_at: new Date().toISOString()
     };
 }
@@ -108,4 +98,4 @@ async function checkQRIS(amount, createdAt, token) {
     };
 }
 
-module.exports = { sendOTP, verifyOTP, createQRIS, checkQRIS };
+module.exports = { sendOTP, verifyOTP, createQRIS, checkQRIS, MEDIA_DIR };
