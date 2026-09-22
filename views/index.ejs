@@ -2,8 +2,11 @@
 <%- include('partials/nav') %>
 
 <section class="relative">
-  <div class="bg-[--yellow] border-b-4 border-[--ink] py-2 text-sm font-bold uppercase tracking-widest text-center overflow-hidden whitespace-nowrap">
-    QRIS Payment Gateway ✦ Deposit Instan ✦ Withdraw E-Wallet ✦ API Developer ✦ QRIS Payment Gateway ✦ Deposit Instan ✦ Withdraw E-Wallet ✦ API Developer ✦
+  <div class="bg-[--yellow] border-b-4 border-[--ink] py-2 overflow-hidden">
+    <div class="marquee-track font-bold uppercase tracking-widest text-sm">
+      <span>QRIS PAYMENT GATEWAY ✦ DEPOSIT INSTAN ✦ WITHDRAW ✦&nbsp;</span>
+      <span aria-hidden="true">QRIS PAYMENT GATEWAY ✦ DEPOSIT INSTAN ✦ WITHDRAW ✦&nbsp;</span>
+    </div>
   </div>
 
   <div class="max-w-6xl mx-auto px-4 pt-16 pb-24 grid lg:grid-cols-2 gap-12 items-center">
@@ -13,7 +16,7 @@
         BAYAR PAKAI<br>QRIS <span class="text-[--pink]">JADI</span><br>GAMPANG.
       </h1>
       <p class="mt-6 text-lg font-semibold max-w-md">
-        Platform pembayaran QRIS online. Deposit saldo via QRIS mendekati instan, tarik dana ke e-wallet favoritmu, dan integrasikan ke web/bot dengan API sederhana.
+        Platform pembayaran QRIS online. Deposit saldo via QRIS mendekati instan, tarik dana ke e-wallet favoritmu.
       </p>
       <div class="mt-8 flex flex-wrap gap-4">
         <% if (user) { %>
@@ -68,20 +71,19 @@
       <div class="card brutal p-6 bg-[--mint]">
         <div class="font-display text-5xl">02</div>
         <h3 class="font-display text-xl mt-3">Saldo Masuk Otomatis</h3>
-        <p class="mt-2 font-semibold">Begitu pembayaran terdeteksi, saldo langsung masuk ke akun. Owner mendapat notifikasi Telegram untuk setiap deposit & penarikan.</p>
+        <p class="mt-2 font-semibold">Begitu pembayaran terdeteksi, saldo langsung masuk ke akun.</p>
       </div>
       <div class="card brutal p-6 bg-[--pink]">
         <div class="font-display text-5xl">03</div>
         <h3 class="font-display text-xl mt-3">Tarik Dana / Integrasi</h3>
-        <p class="mt-2 font-semibold">Tarik ke DANA, GoPay, atau ShopeePay (min Rp5.000), atau pakai API untuk kebutuhan web/bot kamu.</p>
+        <p class="mt-2 font-semibold">Tarik ke DANA, GoPay, atau ShopeePay, atau pakai API untuk kebutuhan website atau bot kamu.</p>
       </div>
     </div>
   </div>
 </section>
 
 <footer class="border-t-4 border-[--ink] bg-[--paper]">
-  <div class="max-w-6xl mx-auto px-4 py-6 flex flex-wrap gap-4 items-center justify-between">
-    <span class="font-display">VANPAY ✦</span>
+  <div class="max-w-6xl mx-auto px-4 py-6">
     <span class="font-semibold text-sm">© <%= new Date().getFullYear() %> <%= setup.name %> — QRIS Payment Gateway</span>
   </div>
 </footer>

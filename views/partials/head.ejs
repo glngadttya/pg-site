@@ -30,6 +30,9 @@ body { background:var(--bg); color:var(--ink); }
 .chip { border:2px solid var(--ink); border-radius:999px; box-shadow:2px 2px 0 var(--ink); }
 .tag { display:inline-block; border:2px solid var(--ink); border-radius:4px; padding:.05rem .35rem; font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
 table.b-table td, table.b-table th { border:2px solid var(--ink); }
+.marquee-track { display:flex; width:max-content; white-space:nowrap; animation:marquee-scroll 40s linear infinite; }
+.marquee-track > span { flex:0 0 auto; }
+@keyframes marquee-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 </style>
 </head>
 <body class="min-h-screen flex flex-col overflow-x-hidden">
