@@ -43,7 +43,9 @@ async function checkAndSettle(payment) {
     if (payment.status !== 'pending') return payment;
     try {
         const { status, result } = await gopay.checkQRIS(payment.amount, payment.qr_created, setup.gopay_token);
-        const paid = status === 'success' && result && (result.status === 'success' || result.status === 'PAID' || !!result.paid);
+        const paidStatus = String(status || '').toUpperCase();
+        const inner = String(result && result.status || '').toLowerCase();
+        const paid = (paidStatus === 'PAID' || paidStatus === 'SUCCESS') && result && (inner === 'success' || inner === 'paid' || inner === 'settlement' || !!result.paid);
         if (!paid) return payment;
         const payments = readDB('payments', []);
         const idx = payments.findIndex((x) => x.id === payment.id);
