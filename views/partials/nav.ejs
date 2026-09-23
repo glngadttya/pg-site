@@ -10,6 +10,8 @@
   </div>
 </header>
 
+<% var p = (typeof path !== 'undefined') ? path : (typeof reqPath !== 'undefined' ? reqPath : ''); %>
+<% function isActive(prefix, exact) { if (exact) return p === prefix; return p.indexOf(prefix) === 0; } %>
 <div id="menu-backdrop" class="fixed inset-0 bg-black/40 z-[55] hidden"></div>
 <aside id="side-menu" class="fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-[--paper] border-l-4 border-[--ink] z-[60] p-5 space-y-2 translate-x-full transition-transform duration-300 ease-out overflow-y-auto">
   <div class="flex items-center justify-between mb-4">
@@ -17,20 +19,20 @@
     <button id="close-btn" class="btn btn-pink px-3 py-1.5 text-sm" aria-label="Tutup menu"><i class="fa-solid fa-xmark mr-1"></i>Tutup</button>
   </div>
   <% if (user) { %>
-    <a href="/" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-house mr-2"></i>Beranda</a>
-    <a href="/dashboard" class="btn btn-mint w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-gauge-high mr-2"></i>Dashboard</a>
-    <a href="/withdraw" class="btn btn-pink w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-money-bill-transfer mr-2"></i>Tarik Dana</a>
-    <a href="/developer" class="btn btn-blue w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-code mr-2"></i>Developer</a>
-    <a href="/history" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Riwayat</a>
-    <a href="/docs" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-book mr-2"></i>Docs</a>
+    <a href="/" class="nav-item <%= isActive('/', true) ? 'active' : '' %>"><% if (isActive('/', true)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-house"></i>Beranda</a>
+    <a href="/dashboard" class="nav-item <%= isActive('/dashboard', true) ? 'active' : '' %>"><% if (isActive('/dashboard', true)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-gauge-high"></i>Dashboard</a>
+    <a href="/withdraw" class="nav-item <%= isActive('/withdraw', true) ? 'active' : '' %>"><% if (isActive('/withdraw', true)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-money-bill-transfer"></i>Tarik Dana</a>
+    <a href="/developer" class="nav-item <%= isActive('/developer', true) ? 'active' : '' %>"><% if (isActive('/developer', true)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-code"></i>Developer</a>
+    <a href="/history" class="nav-item <%= isActive('/history', true) ? 'active' : '' %>"><% if (isActive('/history', true)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-clock-rotate-left"></i>Riwayat</a>
+    <a href="/docs" class="nav-item <%= isActive('/docs', true) ? 'active' : '' %>"><% if (isActive('/docs', true)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-book"></i>Docs</a>
     <% if (user.role === 'owner') { %>
-      <a href="/admin/dashboard" class="btn btn-ink text-[--paper] w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-user-shield mr-2"></i>Admin</a>
+      <a href="/admin/dashboard" class="nav-item <%= isActive('/admin', false) ? 'active' : '' %>"><% if (isActive('/admin', false)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-user-shield"></i>Admin</a>
     <% } %>
-    <a href="/auth/logout" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</a>
+    <a href="/auth/logout" class="nav-item"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
   <% } else { %>
-    <a href="/" class="btn btn-yellow w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-house mr-2"></i>Beranda</a>
-    <a href="/docs" class="btn btn-mint w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-book mr-2"></i>Docs</a>
-    <a href="/auth" class="btn btn-ink text-[--paper] w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-right-to-bracket mr-2"></i>Masuk</a>
+    <a href="/" class="nav-item <%= isActive('/', true) ? 'active' : '' %>"><% if (isActive('/', true)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-house"></i>Beranda</a>
+    <a href="/docs" class="nav-item <%= isActive('/docs', true) ? 'active' : '' %>"><% if (isActive('/docs', true)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-book"></i>Docs</a>
+    <a href="/auth" class="nav-item <%= isActive('/auth', false) ? 'active' : '' %>"><% if (isActive('/auth', false)) { %><span class="nav-marker">▸</span><% } %><i class="fa-solid fa-right-to-bracket"></i>Masuk</a>
   <% } %>
 </aside>
 

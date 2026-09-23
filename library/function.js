@@ -59,7 +59,7 @@ function nowIso() {
 }
 
 function genApiKey() {
-    return 'VAN-' + crypto.randomBytes(24).toString('hex');
+    return 'VAN-' + crypto.randomBytes(10).toString('hex').toLowerCase();
 }
 
 function authUser(req) {

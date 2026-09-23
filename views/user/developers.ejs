@@ -6,42 +6,34 @@
   <h1 class="font-display text-4xl mt-2">Developer</h1>
   <p class="mt-2 font-semibold">Buat API Key untuk mengintegrasikan pembayaran QRIS ke web atau bot kamu. Maksimal 5 key aktif.</p>
 
-  <% if (msg) { %><div class="mt-4 bg-[--mint] brutal-sm p-3 font-semibold text-sm"><%= msg %></div><% } %>
-  <% if (err) { %><div class="mt-4 bg-[--pink] brutal-sm p-3 font-semibold text-sm text-[--ink]"><%= err %></div><% } %>
-
-  <form method="POST" action="/developer/apikey" class="mt-6">
-    <button class="btn btn-yellow px-6 py-3"><i class="fa-solid fa-key mr-2"></i>Buat API Key Baru</button>
+  <form id="create-key-form" method="POST" action="/developer/apikey" class="mt-6">
+    <button id="create-key-btn" class="btn btn-yellow px-6 py-3"><i class="fa-solid fa-key mr-2"></i>Buat API Key Baru</button>
   </form>
 
   <div class="card brutal-lg mt-6">
     <div class="overflow-x-auto">
-    <table class="w-full b-table text-left text-sm min-w-[600px]">
-      <thead class="bg-[--blue]">
+    <table class="w-full b-table text-left text-sm min-w-[480px]">
+      <thead class="bg-[--paper]">
         <tr>
           <th class="p-3">API Key</th>
           <th class="p-3">Dibuat</th>
-          <th class="p-3">Status</th>
-          <th class="p-3">Aksi</th>
         </tr>
       </thead>
       <tbody class="bg-[--paper]">
         <% var keys = user.api_keys || []; %>
         <% if (keys.length === 0) { %>
-          <tr><td colspan="4" class="p-6 text-center font-semibold">Belum ada API key.</td></tr>
+          <tr><td colspan="2" class="p-6 text-center font-semibold">Belum ada API key.</td></tr>
         <% } else { %>
           <% keys.forEach(function (k) { %>
           <tr>
-            <td class="p-3 font-mono text-xs"><%= k.revoked ? k.key.substring(0, 38) + '…' : k.key %></td>
-            <td class="p-3 text-xs font-semibold"><%= new Date(k.created_at).toLocaleString('id-ID') %></td>
-            <td class="p-3"><span class="tag <%= k.revoked ? 'bg-[--pink]' : 'bg-[--mint]' %>"><%= k.revoked ? 'revoked' : 'aktif' %></span></td>
             <td class="p-3">
-              <% if (!k.revoked) { %>
-                <form method="POST" action="/developer/apikey/revoke" onsubmit="return confirm('Cabut API key ini?');">
-                  <input type="hidden" name="id" value="<%= k.id %>">
-                  <button class="btn px-3 py-1 text-xs" style="background:#fff">Revoke</button>
-                </form>
-              <% } else { %>—<% } %>
+              <div class="flex items-center gap-2 flex-wrap">
+                <code class="font-mono text-xs bg-white border-2 border-[--ink] px-2 py-1 rounded-sm"><%= k.key %></code>
+                <button type="button" class="btn px-2 py-1 text-xs" style="background:#fff" data-copy="<%= k.key %>" aria-label="Salin API key"><i class="fa-solid fa-copy"></i></button>
+                <button type="button" class="btn btn-pink px-2 py-1 text-xs" data-del="<%= k.id %>" aria-label="Hapus API key"><i class="fa-solid fa-trash"></i></button>
+              </div>
             </td>
+            <td class="p-3 text-xs font-semibold"><%= new Date(k.created_at).toLocaleString('id-ID') %></td>
           </tr>
           <% }) %>
         <% } %>
@@ -50,11 +42,90 @@
     </div>
   </div>
 
-  <div class="card brutal mt-6 p-5 bg-[--yellow]">
-    <div class="font-display text-lg"><i class="fa-solid fa-terminal mr-2"></i>Contoh penggunaan</div>
-    <pre class="mt-2 text-sm bg-white brutal-sm p-3 overflow-x-auto">curl -X GET "http://localhost:3000/api/payment?api_key=KUNCI_LAKU&amount=25000&external_id=INV-001"</pre>
-    <a href="/docs" class="btn btn-ink text-[--paper] px-4 py-2 mt-4">Baca Dokumentasi Lengkap →</a>
+  <div class="mt-6">
+    <a href="/docs" class="btn btn-ink text-[--paper] px-4 py-2"><i class="fa-solid fa-book mr-2"></i>Baca Dokumentasi Lengkap</a>
   </div>
 </div>
+
+<div id="dev-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div id="dev-badge" class="badge-ok"><div class="badge-circle">
+      <svg class="badge-svg" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19"/><path d="M16 24 L22 30 L33 18"/></svg>
+    </div></div>
+    <div id="dev-title" class="font-display text-xl mt-4">Berhasil</div>
+    <p id="dev-sub" class="mt-2 text-sm font-semibold break-all"></p>
+    <button id="dev-ok" class="btn btn-yellow px-6 py-2.5 mt-6">Oke</button>
+  </div>
+</div>
+
+<script>
+  var modal = document.getElementById('dev-modal');
+  var badge = document.getElementById('dev-badge');
+  var mt = document.getElementById('dev-title');
+  var ms = document.getElementById('dev-sub');
+  var okBtn = document.getElementById('dev-ok');
+  function showBadge(kind, title, sub) {
+    badge.className = kind === 'ok' ? 'badge-ok' : 'badge-err';
+    mt.textContent = title;
+    ms.textContent = sub;
+    modal.classList.remove('hidden');
+  }
+  function copyText(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(t);
+    }
+    var ta = document.createElement('textarea');
+    ta.value = t;
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok ? Promise.resolve() : Promise.reject();
+  }
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      copyText(b.getAttribute('data-copy')).then(function () {
+        showBadge('ok', 'API key tersalin', 'API key sudah disalin ke clipboard.');
+      }).catch(function () {
+        showBadge('err', 'Gagal menyalin', 'Coba salin secara manual.');
+      });
+    });
+  });
+  document.querySelectorAll('[data-del]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var id = b.getAttribute('data-del');
+      fetch('/developer/apikey/delete', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'id=' + encodeURIComponent(id) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.success) {
+            showBadge('ok', 'API key dihapus', 'API key dihapus permanen. Buat key baru untuk menampilkannya lagi.');
+            setTimeout(function () { location.reload(); }, 1200);
+          } else {
+            showBadge('err', 'Gagal menghapus', d.message || 'Terjadi kesalahan, coba lagi.');
+          }
+        })
+        .catch(function () { showBadge('err', 'Gagal menghapus', 'Terjadi kesalahan jaringan, coba lagi.'); });
+    });
+  });
+  document.getElementById('create-key-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    okBtn.onclick = function () { modal.classList.add('hidden'); };
+    fetch('/developer/apikey', { method: 'POST', headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.success) {
+          showBadge('ok', 'API key berhasil dibuat', d.data.key);
+          okBtn.onclick = function () { location.reload(); };
+        } else {
+          showBadge('err', 'Gagal membuat API key', d.message || 'Terjadi kesalahan, coba lagi.');
+          okBtn.onclick = function () { modal.classList.add('hidden'); };
+        }
+      })
+      .catch(function () {
+        showBadge('err', 'Gagal membuat API key', 'Terjadi kesalahan jaringan, coba lagi.');
+        okBtn.onclick = function () { modal.classList.add('hidden'); };
+      });
+  });
+</script>
 
 <%- include('../partials/foot') %>

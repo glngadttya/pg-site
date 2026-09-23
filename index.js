@@ -31,6 +31,7 @@ app.use(cookieParser());
 app.use(function (req, res, next) {
     res.locals.user = authUser(req);
     res.locals.setup = loadSetup();
+    res.locals.path = req.path;
     res.locals.helpers = { rupiah, transactionFee };
     res.locals.feeTiers = FEE_TIERS;
     res.locals.msg = null;
@@ -236,12 +237,14 @@ app.post('/dashboard/deposit', requireAuth, async (req, res) => {
     const setup = loadSetup();
     const user = res.locals.user;
     const amount = parseInt(req.body.amount, 10);
+    const wantsJson = req.xhr || (req.headers.accept || '').includes('application/json');
+    const fail = (m) => wantsJson ? res.json({ success: false, message: m }) : res.redirect('/dashboard?err=' + encodeURIComponent(m));
     try {
         if (!amount || amount < 1000 || amount > 5000000) {
-            return res.redirect('/dashboard?err=' + encodeURIComponent('Nominal harus antara Rp1.000 dan Rp5.000.000'));
+            return fail('Nominal harus antara Rp1.000 dan Rp5.000.000');
         }
         if (!setup.gopay_token || !setup.static_qr) {
-            return res.redirect('/dashboard?err=' + encodeURIComponent('Fitur deposit belum diaktifkan. Hubungi admin.'));
+            return fail('Fitur deposit belum diaktifkan. Hubungi admin.');
         }
         const qr = await gopay.createQRIS(amount, setup.static_qr);
         const payments = readDB('payments', []);
@@ -261,6 +264,7 @@ app.post('/dashboard/deposit', requireAuth, async (req, res) => {
         };
         payments.push(payment);
         writeDB('payments', payments);
+        if (wantsJson) return res.json({ success: true, id: payment.id });
         res.redirect('/payment?id=' + payment.id);
     } catch (e) {
         res.redirect('/dashboard?err=' + encodeURIComponent('Gagal membuat QRIS: ' + (e.message || e)));
@@ -283,7 +287,8 @@ app.post('/withdraw', requireAuth, async (req, res) => {
     const method = String(req.body.method || '').toLowerCase();
     const account = String(req.body.account || '').trim();
     const holder = String(req.body.holder || '').trim();
-    const back = (msg) => res.redirect('/withdraw?err=' + encodeURIComponent(msg));
+    const wantsJson = req.xhr || (req.headers.accept || '').includes('application/json');
+    const back = (msg) => wantsJson ? res.json({ success: false, message: msg }) : res.redirect('/withdraw?err=' + encodeURIComponent(msg));
     if (!EWALLETS.includes(method)) return back('Metode e-wallet tidak valid');
     if (!/^[0-9]{4,}$/.test(account)) return back('Nomor akun e-wallet tidak valid');
     if (!holder) return back('Nama pemilik akun wajib diisi');
@@ -303,6 +308,7 @@ app.post('/withdraw', requireAuth, async (req, res) => {
     withdrawals.push(wd);
     writeDB('withdrawals', withdrawals);
     await telegram.notifyWithdraw(setup, user, wd);
+    if (wantsJson) return res.json({ success: true, amount, fee, total });
     res.redirect('/history?msg=' + encodeURIComponent('Permintaan penarikan terkirim. Menunggu persetujuan admin.'));
 });
 
@@ -335,19 +341,28 @@ app.get('/developer', requireAuth, (req, res) => {
 
 app.post('/developer/apikey', requireAuth, (req, res) => {
     const user = res.locals.user;
+    const wantsJson = req.xhr || (req.headers.accept || '').includes('application/json');
     const active = (user.api_keys || []).filter((k) => !k.revoked);
-    if (active.length >= 5) return res.redirect('/developer?err=' + encodeURIComponent('Maksimal 5 API key aktif'));
+    if (active.length >= 5) {
+        const msg = 'Maksimal 5 API key aktif';
+        return wantsJson ? res.json({ success: false, message: msg }) : res.redirect('/developer?err=' + encodeURIComponent(msg));
+    }
+    const key = genApiKey();
     const keys = user.api_keys || [];
-    keys.unshift({ id: uid('K_'), key: genApiKey(), created_at: nowIso(), revoked: false });
+    keys.unshift({ id: uid('K_'), key, created_at: nowIso(), revoked: false });
     updateUser(user.id, { api_keys: keys });
+    if (wantsJson) return res.json({ success: true, data: { key } });
     res.redirect('/developer?msg=' + encodeURIComponent('API key baru berhasil dibuat.'));
 });
 
-app.post('/developer/apikey/revoke', requireAuth, (req, res) => {
+app.post('/developer/apikey/delete', requireAuth, (req, res) => {
     const user = res.locals.user;
-    const keys = (user.api_keys || []).map((k) => (k.id === req.body.id ? Object.assign({}, k, { revoked: true }) : k));
+    const id = String(req.body.id || '');
+    const keys = (user.api_keys || []).filter((k) => k.id !== id);
     updateUser(user.id, { api_keys: keys });
-    res.redirect('/developer?msg=' + encodeURIComponent('API key dicabut.'));
+    const wantsJson = req.xhr || (req.headers.accept || '').includes('application/json');
+    if (wantsJson) return res.json({ success: true });
+    res.redirect('/developer?msg=' + encodeURIComponent('API key dihapus.'));
 });
 
 app.get('/payment', async (req, res) => {

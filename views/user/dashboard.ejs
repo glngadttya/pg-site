@@ -38,7 +38,7 @@
       <% if (err) { %>
         <div class="mt-4 bg-[--pink] brutal-sm p-3 font-semibold text-sm text-[--ink]"><%= err %></div>
       <% } %>
-      <form method="POST" action="/dashboard/deposit" class="mt-5 space-y-4">
+      <form id="deposit-form" method="POST" action="/dashboard/deposit" class="mt-5 space-y-4">
         <div>
           <label class="font-bold text-sm">Nominal (maks Rp5.000.000)</label>
           <div class="input mt-1 flex items-center gap-2">
@@ -75,5 +75,70 @@
     </div>
   </div>
 </div>
+
+<div id="deposit-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div id="deposit-badge" class="badge-ok"><div class="badge-circle">
+      <svg class="badge-svg" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19"/><path d="M16 24 L22 30 L33 18"/></svg>
+    </div></div>
+    <div id="deposit-title" class="font-display text-xl mt-4">Berhasil membuat QRIS pembayaran</div>
+    <p id="deposit-sub" class="mt-2 text-sm font-semibold">Klik Lanjut untuk membuka halaman pembayaran.</p>
+    <button id="deposit-ok" class="btn btn-yellow px-6 py-2.5 mt-6">Lanjut</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var form = document.getElementById('deposit-form');
+    var modal = document.getElementById('deposit-modal');
+    var badge = document.getElementById('deposit-badge');
+    var title = document.getElementById('deposit-title');
+    var sub = document.getElementById('deposit-sub');
+    var okBtn = document.getElementById('deposit-ok');
+    var pendingId = null;
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type=submit], button');
+      var old = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Membuat...';
+      try {
+        var r = await fetch('/dashboard/deposit', { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) });
+        var d = await r.json();
+        if (d.success) {
+          pendingId = d.id;
+          badge.className = 'badge-ok';
+          title.textContent = 'Berhasil membuat QRIS pembayaran';
+          sub.textContent = 'Klik Lanjut untuk membuka halaman pembayaran.';
+          okBtn.classList.remove('btn-pink');
+          okBtn.classList.add('btn-yellow');
+          okBtn.innerHTML = 'Lanjut';
+          okBtn.onclick = function () { location.href = '/payment?id=' + pendingId; };
+        } else {
+          badge.className = 'badge-err';
+          title.textContent = 'Gagal membuat QRIS';
+          sub.textContent = d.message || 'Terjadi kesalahan, coba lagi.';
+          okBtn.classList.remove('btn-yellow');
+          okBtn.classList.add('btn-pink');
+          okBtn.innerHTML = 'Tutup';
+          okBtn.onclick = function () { modal.classList.add('hidden'); };
+        }
+        modal.classList.remove('hidden');
+      } catch (e) {
+        badge.className = 'badge-err';
+        title.textContent = 'Gagal membuat QRIS';
+        sub.textContent = 'Terjadi kesalahan jaringan, coba lagi.';
+        okBtn.classList.remove('btn-yellow');
+        okBtn.classList.add('btn-pink');
+        okBtn.innerHTML = 'Tutup';
+        okBtn.onclick = function () { modal.classList.add('hidden'); };
+        modal.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = old;
+      }
+    });
+  })();
+</script>
 
 <%- include('../partials/foot') %>

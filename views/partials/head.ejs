@@ -6,7 +6,7 @@
 <title><%= title ? title + ' · ' + setup.name : setup.name %></title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,9 +44,25 @@ table.b-table td, table.b-table th { border:2px solid var(--ink); }
 .term-dot.green{background:#28c840;}
 .term-pre { margin:0; padding:14px 16px; overflow-x:auto; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:13px; line-height:1.7; }
 .term-pre code.hljs { background:transparent; padding:0; font-family:inherit; }
-.term-pre .hljs { color:#c9d1d9; }
 .term-status { display:inline-block; margin-top:8px; font-weight:700; font-size:12px; }
 .icon-lg { font-size:1.35rem; }
+.nav-item { border:2px solid var(--ink); border-radius:5px; box-shadow:3px 3px 0 var(--ink); background:var(--paper); color:var(--ink); font-weight:700; display:flex; align-items:center; gap:.5rem; padding:.6rem .8rem; font-size:.875rem; text-align:left; width:100%; transition:all .12s ease; cursor:pointer; text-decoration:none; }
+.nav-item:hover { transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--ink); }
+.nav-item.active { background:var(--ink); color:var(--paper); pointer-events:none; }
+.nav-item.active .nav-marker { color:var(--mint); }
+.modal-overlay { position:fixed; inset:0; background:rgba(17,17,17,.55); display:flex; align-items:center; justify-content:center; padding:1rem; z-index:80; }
+.modal-card { width:100%; max-width:20rem; background:var(--paper); border:4px solid var(--ink); border-radius:10px; box-shadow:8px 8px 0 var(--ink); padding:1.75rem 1.5rem; text-align:center; animation:modal-pop .35s cubic-bezier(.34,1.56,.64,1) both; }
+@keyframes modal-pop { from { transform:scale(.55); opacity:0 } to { transform:scale(1); opacity:1 } }
+.badge-circle { width:88px; height:88px; border-radius:9999px; display:flex; align-items:center; justify-content:center; margin:0 auto; border:2px solid var(--ink); }
+.badge-ok .badge-circle { background:#bbf7d0; }
+.badge-err .badge-circle { background:#fecaca; }
+.badge-svg { width:56px; height:56px; }
+.badge-svg circle { fill:none; stroke-width:5; stroke-linecap:round; stroke-dasharray:120; stroke-dashoffset:120; animation:draw .5s ease forwards; }
+.badge-svg path { fill:none; stroke:#fff; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:60; stroke-dashoffset:60; animation:draw .35s .5s ease forwards; }
+.badge-ok .badge-svg circle { stroke:#16a34a; }
+.badge-err .badge-svg circle { stroke:#dc2626; }
+@keyframes draw { to { stroke-dashoffset:0 } }
+.countdown { font-family:'JetBrains Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; }
 </style>
 </head>
 <body class="min-h-screen flex flex-col overflow-x-hidden">

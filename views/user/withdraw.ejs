@@ -9,7 +9,7 @@
   <% if (msg) { %><div class="mt-4 bg-[--mint] brutal-sm p-3 font-semibold text-sm"><%= msg %></div><% } %>
   <% if (err) { %><div class="mt-4 bg-[--pink] brutal-sm p-3 font-semibold text-sm text-[--ink]"><%= err %></div><% } %>
 
-  <form method="POST" action="/withdraw" class="card brutal-lg mt-6 p-6 space-y-4">
+  <form id="withdraw-form" method="POST" action="/withdraw" class="card brutal-lg mt-6 p-6 space-y-4">
     <div>
       <label class="font-bold text-sm"><i class="fa-solid fa-wallet mr-1"></i>E-Wallet Tujuan</label>
       <select name="method" required class="input mt-1">
@@ -33,8 +33,12 @@
         <span class="font-display">Rp</span>
         <input name="amount" type="number" min="5000" step="1000" required class="bg-transparent font-bold outline-none w-full" placeholder="100000">
       </div>
-      <div class="mt-2 text-xs font-semibold opacity-70">
-        Biaya layanan: <b id="fee-display" class="opacity-100">Rp0</b> — Total terpotong: <b id="total-display" class="opacity-100">Rp0</b>
+      <div>
+        <label class="font-bold text-sm mt-3 block" for="fee-input"><i class="fa-solid fa-scissors mr-1"></i>Fee Penarikan</label>
+        <div class="input mt-1 flex items-center gap-2 bg-[--paper]">
+          <span class="font-display">Rp</span>
+          <input id="fee-input" type="text" readonly class="bg-transparent font-bold outline-none w-full" placeholder="Otomatis sesuai nominal" value="">
+        </div>
       </div>
       <details class="mt-3 text-xs">
         <summary class="font-bold cursor-pointer opacity-70"><i class="fa-solid fa-table mr-1"></i>Tabel biaya layanan</summary>
@@ -52,6 +56,17 @@
   </form>
 </div>
 
+<div id="wd-modal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div id="wd-badge" class="badge-ok"><div class="badge-circle">
+      <svg class="badge-svg" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19"/><path d="M16 24 L22 30 L33 18"/></svg>
+    </div></div>
+    <div id="wd-title" class="font-display text-xl mt-4">Permintaan penarikan terkirim</div>
+    <p id="wd-sub" class="mt-2 text-sm font-semibold">Menunggu persetujuan admin.</p>
+    <button class="btn btn-yellow px-6 py-2.5 mt-6" onclick="location.href='/dashboard'">Kembali</button>
+  </div>
+</div>
+
 <script>
   const TIERS = <%= JSON.stringify(feeTiers) %>;
   function fmt(n) { return 'Rp' + Number(n || 0).toLocaleString('id-ID'); }
@@ -60,12 +75,49 @@
     const t = TIERS.find((x) => n >= x.min && n <= x.max);
     return t ? t.fee : 0;
   }
-  document.querySelector('[name=amount]').addEventListener('input', function (e) {
+  var amountInput = document.querySelector('[name=amount]');
+  var feeInput = document.getElementById('fee-input');
+  amountInput.addEventListener('input', function (e) {
     const amt = parseInt(e.target.value, 10) || 0;
-    const fee = getFee(amt);
-    document.getElementById('fee-display').textContent = fmt(fee);
-    document.getElementById('total-display').textContent = fmt(amt + fee);
+    feeInput.value = amt ? fmt(getFee(amt)) : '';
   });
+
+  (function () {
+    var form = document.getElementById('withdraw-form');
+    var modal = document.getElementById('wd-modal');
+    var badge = document.getElementById('wd-badge');
+    var title = document.getElementById('wd-title');
+    var sub = document.getElementById('wd-sub');
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type=submit], button');
+      var old = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Mengirim...';
+      try {
+        var r = await fetch('/withdraw', { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) });
+        var d = await r.json();
+        if (d.success) {
+          badge.className = 'badge-ok';
+          title.textContent = 'Permintaan penarikan terkirim';
+          sub.textContent = 'Menunggu persetujuan admin.';
+        } else {
+          badge.className = 'badge-err';
+          title.textContent = 'Gagal mengirim penarikan';
+          sub.textContent = d.message || 'Terjadi kesalahan, coba lagi.';
+        }
+        modal.classList.remove('hidden');
+      } catch (e) {
+        badge.className = 'badge-err';
+        title.textContent = 'Gagal mengirim penarikan';
+        sub.textContent = 'Terjadi kesalahan jaringan, coba lagi.';
+        modal.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = old;
+      }
+    });
+  })();
 </script>
 
 <%- include('../partials/foot') %>
