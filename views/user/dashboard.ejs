@@ -103,7 +103,7 @@
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Membuat...';
       try {
-        var r = await fetch('/dashboard/deposit', { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) });
+        var r = await fetch('/dashboard/deposit', { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form)).toString() });
         var d = await r.json();
         if (d.success) {
           pendingId = d.id;
