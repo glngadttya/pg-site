@@ -2,48 +2,67 @@
   <div class="max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 py-3">
     <a href="/" class="font-display text-xl md:text-2xl tracking-tight brutal-sm bg-[--ink] text-[--paper] px-3 py-1">VANPAY</a>
     <div class="flex items-center gap-2">
-      <nav id="desktop-nav" class="hidden md:flex items-center gap-2 flex-wrap">
-        <% if (user) { %>
-          <a href="/dashboard" class="btn btn-mint px-3 py-1.5 text-sm"><i class="fa-solid fa-gauge-high mr-1.5"></i>Dashboard</a>
-          <a href="/withdraw" class="btn btn-pink px-3 py-1.5 text-sm"><i class="fa-solid fa-money-bill-transfer mr-1.5"></i>Tarik Dana</a>
-          <a href="/developer" class="btn btn-blue px-3 py-1.5 text-sm"><i class="fa-solid fa-code mr-1.5"></i>Developer</a>
-          <a href="/history" class="btn px-3 py-1.5 text-sm" style="background:#fff"><i class="fa-solid fa-clock-rotate-left mr-1.5"></i>Riwayat</a>
-          <% if (user.role === 'owner') { %>
-            <a href="/admin/dashboard" class="btn btn-ink text-[--paper] px-3 py-1.5 text-sm"><i class="fa-solid fa-user-shield mr-1.5"></i>Admin</a>
-          <% } %>
-          <a href="/auth/logout" class="btn px-3 py-1.5 text-sm" style="background:#fff"><i class="fa-solid fa-right-from-bracket mr-1.5"></i>Logout</a>
-        <% } else { %>
-          <a href="/" class="btn btn-yellow px-3 py-1.5 text-sm"><i class="fa-solid fa-house mr-1.5"></i>Beranda</a>
-          <a href="/docs" class="btn btn-mint px-3 py-1.5 text-sm"><i class="fa-solid fa-book mr-1.5"></i>Docs</a>
-          <a href="/auth" class="btn btn-ink text-[--paper] px-3 py-1.5 text-sm"><i class="fa-solid fa-right-to-bracket mr-1.5"></i>Masuk</a>
-        <% } %>
-      </nav>
-      <button id="menu-btn" class="md:hidden btn btn-ink px-3 py-2" aria-label="Menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <button id="menu-btn" class="btn btn-ink px-3 py-2" aria-label="Buka menu" aria-expanded="false">
+        <svg id="icon-hamburger" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg id="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" class="hidden"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
       </button>
     </div>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden border-t-4 border-[--ink] bg-[--paper] px-4 py-4 space-y-2">
-    <% if (user) { %>
-      <a href="/" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-house mr-2"></i>Beranda</a>
-      <a href="/dashboard" class="btn btn-mint w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-gauge-high mr-2"></i>Dashboard</a>
-      <a href="/withdraw" class="btn btn-pink w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-money-bill-transfer mr-2"></i>Tarik Dana</a>
-      <a href="/developer" class="btn btn-blue w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-code mr-2"></i>Developer</a>
-      <a href="/history" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Riwayat</a>
-      <a href="/docs" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-book mr-2"></i>Docs</a>
-      <% if (user.role === 'owner') { %>
-        <a href="/admin/dashboard" class="btn btn-ink text-[--paper] w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-user-shield mr-2"></i>Admin</a>
-      <% } %>
-      <a href="/auth/logout" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</a>
-    <% } else { %>
-      <a href="/" class="btn btn-yellow w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-house mr-2"></i>Beranda</a>
-      <a href="/docs" class="btn btn-mint w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-book mr-2"></i>Docs</a>
-      <a href="/auth" class="btn btn-ink text-[--paper] w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-right-to-bracket mr-2"></i>Masuk</a>
-    <% } %>
-  </div>
 </header>
+
+<div id="menu-backdrop" class="fixed inset-0 bg-black/40 z-[55] hidden"></div>
+<aside id="side-menu" class="fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-[--paper] border-l-4 border-[--ink] z-[60] p-5 space-y-2 translate-x-full transition-transform duration-300 ease-out overflow-y-auto">
+  <div class="flex items-center justify-between mb-4">
+    <span class="font-display text-lg tracking-tight">MENU</span>
+    <button id="close-btn" class="btn btn-pink px-3 py-1.5 text-sm" aria-label="Tutup menu"><i class="fa-solid fa-xmark mr-1"></i>Tutup</button>
+  </div>
+  <% if (user) { %>
+    <a href="/" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-house mr-2"></i>Beranda</a>
+    <a href="/dashboard" class="btn btn-mint w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-gauge-high mr-2"></i>Dashboard</a>
+    <a href="/withdraw" class="btn btn-pink w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-money-bill-transfer mr-2"></i>Tarik Dana</a>
+    <a href="/developer" class="btn btn-blue w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-code mr-2"></i>Developer</a>
+    <a href="/history" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Riwayat</a>
+    <a href="/docs" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-book mr-2"></i>Docs</a>
+    <% if (user.role === 'owner') { %>
+      <a href="/admin/dashboard" class="btn btn-ink text-[--paper] w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-user-shield mr-2"></i>Admin</a>
+    <% } %>
+    <a href="/auth/logout" class="btn w-full px-3 py-2.5 text-sm text-left" style="background:#fff"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</a>
+  <% } else { %>
+    <a href="/" class="btn btn-yellow w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-house mr-2"></i>Beranda</a>
+    <a href="/docs" class="btn btn-mint w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-book mr-2"></i>Docs</a>
+    <a href="/auth" class="btn btn-ink text-[--paper] w-full px-3 py-2.5 text-sm text-left"><i class="fa-solid fa-right-to-bracket mr-2"></i>Masuk</a>
+  <% } %>
+</aside>
+
 <script>
-  document.getElementById('menu-btn').addEventListener('click', function () {
-    document.getElementById('mobile-menu').classList.toggle('hidden');
-  });
+  (function () {
+    var menuBtn = document.getElementById('menu-btn');
+    var closeBtn = document.getElementById('close-btn');
+    var menu = document.getElementById('side-menu');
+    var backdrop = document.getElementById('menu-backdrop');
+    var iconOpen = document.getElementById('icon-hamburger');
+    var iconClose = document.getElementById('icon-close');
+    function open() {
+      menu.classList.remove('translate-x-full');
+      backdrop.classList.remove('hidden');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      iconOpen.classList.add('hidden');
+      iconClose.classList.remove('hidden');
+    }
+    function close() {
+      menu.classList.add('translate-x-full');
+      backdrop.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    }
+    menuBtn.addEventListener('click', function () {
+      menu.classList.contains('translate-x-full') ? open() : close();
+    });
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+    });
+  })();
 </script>
