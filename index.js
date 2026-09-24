@@ -8,6 +8,7 @@ const gopay = require('./library/scrape/gopay');
 const google = require('./library/scrape/google');
 const github = require('./library/scrape/github');
 const telegram = require('./library/telegram');
+const og = require('./library/og');
 
 const {
     readDB, writeDB, loadSetup, saveSetup, uid, rupiah, nowIso,
@@ -379,7 +380,8 @@ app.get('/payment', async (req, res) => {
         payment: fresh,
         owner,
         metaTitle: `Bayar ${amount} via QRIS · ${setup.name}`,
-        metaDescription: `Scan QRIS untuk menyelesaikan pembayaran ${amount} secara instan. Berlaku hingga ${expWib} WIB. Selesai dalam hitungan detik — aman & terverifikasi.`
+        metaDescription: `Scan QRIS untuk menyelesaikan pembayaran ${amount} secara instan. Berlaku hingga ${expWib} WIB. Selesai dalam hitungan detik — aman & terverifikasi.`,
+        metaImage: `${(setup.base_url || '').replace(/\/+$/, '')}/og/${fresh.id}`
     });
 });
 
@@ -388,6 +390,38 @@ app.get('/payment/status', async (req, res) => {
     if (!p) return res.json({ success: false, message: 'Payment not found' });
     const settled = await checkAndSettle(p);
     res.json({ success: true, id: settled.id, external_id: settled.external_id, amount: settled.amount, status: settled.status, paid_at: settled.paid_at || null });
+});
+
+app.get('/og/brand', async (req, res) => {
+    try {
+        const png = await og.brandPng(res.locals.setup || loadSetup());
+        res.set('Content-Type', 'image/png');
+        res.set('Cache-Control', 'public, max-age=86400');
+        res.send(png);
+    } catch (e) {
+        res.status(500).send('og error');
+    }
+});
+
+app.get('/og/:id.svg', async (req, res) => {
+    const p = readDB('payments', []).find((x) => x.id === String(req.params.id));
+    if (!p) return res.status(404).send('Payment not found');
+    res.set('Content-Type', 'image/svg+xml');
+    res.set('Cache-Control', 'public, max-age=3600');
+    res.send(og.paymentCard(p, res.locals.setup || loadSetup()));
+});
+
+app.get('/og/:id', async (req, res) => {
+    const p = readDB('payments', []).find((x) => x.id === String(req.params.id));
+    if (!p) return res.status(404).send('Payment not found');
+    try {
+        const png = await og.paymentPng(p, res.locals.setup || loadSetup());
+        res.set('Content-Type', 'image/png');
+        res.set('Cache-Control', 'public, max-age=86400');
+        res.send(png);
+    } catch (e) {
+        res.status(500).send('og error');
+    }
 });
 
 app.get('/api/payment', async (req, res) => {

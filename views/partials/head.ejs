@@ -7,15 +7,18 @@
 <% var mt = typeof metaTitle !== 'undefined' && metaTitle ? metaTitle : (title ? title + ' · ' + setup.name : setup.name); %>
 <% var md = typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : setup.name + ' — Payment gateway QRIS. Top up saldo instan via QRIS, tarik dana ke DANA, GoPay & ShopeePay. Aman, cepat, tersedia 24/7.'; %>
 <% var mu = (setup.base_url || '').replace(/\/+$/,'') + (typeof path !== 'undefined' && path ? path : '/'); %>
+<% var mi = typeof metaImage !== 'undefined' && metaImage ? metaImage : ((setup.base_url || '').replace(/\/+$/,'') + '/og/brand'); %>
 <meta name="description" content="<%= md %>">
 <meta property="og:site_name" content="<%= setup.name %>">
 <meta property="og:type" content="website">
 <meta property="og:url" content="<%= mu %>">
 <meta property="og:title" content="<%= mt %>">
 <meta property="og:description" content="<%= md %>">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="<%= mi %>">
+<meta name="twitter:card" content="<%= mi ? 'summary_large_image' : 'summary' %>">
 <meta name="twitter:title" content="<%= mt %>">
 <meta name="twitter:description" content="<%= md %>">
+<meta name="twitter:image" content="<%= mi %>">
 <meta name="theme-color" content="#ffd400">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
