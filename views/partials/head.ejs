@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><%= title ? title + ' · ' + setup.name : setup.name %></title>
+<% var mt = typeof metaTitle !== 'undefined' && metaTitle ? metaTitle : (title ? title + ' · ' + setup.name : setup.name); %>
+<% var md = typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : setup.name + ' — Payment gateway QRIS. Top up saldo instan via QRIS, tarik dana ke DANA, GoPay & ShopeePay. Aman, cepat, tersedia 24/7.'; %>
+<% var mu = (setup.base_url || '').replace(/\/+$/,'') + (typeof path !== 'undefined' && path ? path : '/'); %>
+<meta name="description" content="<%= md %>">
+<meta property="og:site_name" content="<%= setup.name %>">
+<meta property="og:type" content="website">
+<meta property="og:url" content="<%= mu %>">
+<meta property="og:title" content="<%= mt %>">
+<meta property="og:description" content="<%= md %>">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="<%= mt %>">
+<meta name="twitter:description" content="<%= md %>">
+<meta name="theme-color" content="#ffd400">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
@@ -53,14 +66,14 @@ table.b-table td, table.b-table th { border:2px solid var(--ink); }
 .modal-overlay { position:fixed; inset:0; background:rgba(17,17,17,.55); display:flex; align-items:center; justify-content:center; padding:1rem; z-index:80; }
 .modal-card { width:100%; max-width:20rem; background:var(--paper); border:4px solid var(--ink); border-radius:10px; box-shadow:8px 8px 0 var(--ink); padding:1.75rem 1.5rem; text-align:center; animation:modal-pop .35s cubic-bezier(.34,1.56,.64,1) both; }
 @keyframes modal-pop { from { transform:scale(.55); opacity:0 } to { transform:scale(1); opacity:1 } }
-.badge-circle { width:88px; height:88px; border-radius:9999px; display:flex; align-items:center; justify-content:center; margin:0 auto; border:2px solid var(--ink); }
-.badge-ok .badge-circle { background:#bbf7d0; }
-.badge-err .badge-circle { background:#fecaca; }
+.badge-circle { width:88px; height:88px; border-radius:9999px; display:flex; align-items:center; justify-content:center; margin:0 auto; box-shadow:inset -8px -10px 0 rgba(0,0,0,.15); }
+.badge-ok .badge-circle { background:#16a34a; }
+.badge-err .badge-circle { background:#dc2626; }
 .badge-svg { width:56px; height:56px; }
-.badge-svg circle { fill:none; stroke-width:5; stroke-linecap:round; stroke-dasharray:120; stroke-dashoffset:120; animation:draw .5s ease forwards; }
 .badge-svg path { fill:none; stroke:#fff; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:60; stroke-dashoffset:60; animation:draw .35s .5s ease forwards; }
-.badge-ok .badge-svg circle { stroke:#16a34a; }
-.badge-err .badge-svg circle { stroke:#dc2626; }
+.badge-x { display:none; }
+.badge-err .badge-check { display:none; }
+.badge-err .badge-x { display:block; }
 @keyframes draw { to { stroke-dashoffset:0 } }
 .countdown { font-family:'JetBrains Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; }
 </style>

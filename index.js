@@ -371,7 +371,16 @@ app.get('/payment', async (req, res) => {
     await checkAndSettle(p);
     const fresh = readDB('payments', []).find((x) => x.id === p.id);
     const owner = readDB('users', []).find((x) => x.id === p.user_id);
-    res.render('user/pay-result', { title: 'Pembayaran', payment: fresh, owner });
+    const setup = res.locals.setup || {};
+    const amount = rupiah(fresh.amount);
+    const expWib = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(fresh.exp_at));
+    res.render('user/pay-result', {
+        title: 'Pembayaran',
+        payment: fresh,
+        owner,
+        metaTitle: `Bayar ${amount} via QRIS · ${setup.name}`,
+        metaDescription: `Scan QRIS untuk menyelesaikan pembayaran ${amount} secara instan. Berlaku hingga ${expWib} WIB. Selesai dalam hitungan detik — aman & terverifikasi.`
+    });
 });
 
 app.get('/payment/status', async (req, res) => {
