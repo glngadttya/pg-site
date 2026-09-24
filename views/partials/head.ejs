@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><%= title ? title + ' · ' + setup.name : setup.name %></title>
 <% var mt = typeof metaTitle !== 'undefined' && metaTitle ? metaTitle : (title ? title + ' · ' + setup.name : setup.name); %>
-<% var md = typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : setup.name + ' — Payment gateway QRIS. Top up saldo instan via QRIS, tarik dana ke DANA, GoPay & ShopeePay. Aman, cepat, tersedia 24/7.'; %>
+<% var md = typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : 'Top up saldo instan via QRIS, tarik dana ke DANA, GoPay & ShopeePay. Aman, cepat, tersedia 24/7.'; %>
 <% var mu = (setup.base_url || '').replace(/\/+$/,'') + (typeof path !== 'undefined' && path ? path : '/'); %>
 <% var mi = typeof metaImage !== 'undefined' && metaImage ? metaImage : ((setup.base_url || '').replace(/\/+$/,'') + '/og/brand?v=2'); %>
 <meta name="description" content="<%= md %>">

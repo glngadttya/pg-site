@@ -149,16 +149,16 @@ function setAuthCookie(res, user) {
 }
 
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Home' });
+    res.render('index', { title: 'Vanpay', metaTitle: 'Vanpay - Payment Gateway QRIS', metaDescription: 'Top up saldo instan via QRIS, tarik dana ke DANA, GoPay & ShopeePay. Aman, cepat, tersedia 24/7.' });
 });
 
 app.get('/docs', (req, res) => {
-    res.render('docs', { title: 'Dokumentasi API' });
+    res.render('docs', { title: 'Dokumentasi API', metaTitle: 'Dokumentasi API Vanpay', metaDescription: 'Dokumentasi lengkap API Payment Gateway QRIS Vanpay — pembuatan pembayaran, callback, hingga penarikan dana. Siap integrasi dalam hitungan menit.' });
 });
 
 app.get('/auth', (req, res) => {
     if (authUser(req)) return res.redirect('/dashboard');
-    res.render('login', { title: 'Masuk', err: req.query.err || null });
+    res.render('login', { title: 'Masuk', metaTitle: 'Masuk - Vanpay', err: req.query.err || null });
 });
 
 app.get('/auth/google', (req, res) => {
@@ -225,6 +225,8 @@ app.get('/dashboard', requireAuth, (req, res) => {
     ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
     res.render('user/dashboard', {
         title: 'Dashboard',
+        metaTitle: 'Dashboard Vanpay',
+        metaDescription: 'Kelola saldo, buat pembayaran QRIS instan, tarik dana ke DANA, GoPay & ShopeePay. Pantau semuanya dari satu dashboard.',
         totalDeposit, totalWithdraw,
         countDeposit: deposits.length,
         countWithdraw: withdrawals.length,
@@ -275,6 +277,8 @@ app.post('/dashboard/deposit', requireAuth, async (req, res) => {
 app.get('/withdraw', requireAuth, (req, res) => {
     res.render('user/withdraw', {
         title: 'Tarik Dana',
+        metaTitle: 'Tarik Dana Vanpay',
+        metaDescription: 'Tarik saldo instan ke DANA, GoPay & ShopeePay secara otomatis melalui QRIS. Cair cepat, bebas antre, ready 24/7.',
         msg: req.query.msg ? decodeURIComponent(req.query.msg) : null,
         err: req.query.err ? decodeURIComponent(req.query.err) : null
     });
@@ -327,7 +331,10 @@ app.get('/history', requireAuth, (req, res) => {
     }
     rows.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     res.render('user/history', {
-        title: 'Riwayat', filter, rows,
+        title: 'Riwayat',
+        metaTitle: 'Riwayat Transaksi Vanpay',
+        metaDescription: 'Lihat seluruh transaksimu — top up QRIS, tarik dana & biaya — dalam satu riwayat lengkap yang tersusun rapi.',
+        filter, rows,
         msg: req.query.msg ? decodeURIComponent(req.query.msg) : null
     });
 });
@@ -335,6 +342,8 @@ app.get('/history', requireAuth, (req, res) => {
 app.get('/developer', requireAuth, (req, res) => {
     res.render('user/developers', {
         title: 'Developer',
+        metaTitle: 'Developer Vanpay',
+        metaDescription: 'Integrasikan payment gateway QRIS Vanpay ke aplikasimu — API key, webhook, & dokumentasi lengkap untuk pengembang.',
         msg: req.query.msg ? decodeURIComponent(req.query.msg) : null,
         err: req.query.err ? decodeURIComponent(req.query.err) : null
     });
