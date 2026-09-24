@@ -1,6 +1,6 @@
-const path = require('path');
 const fs = require('fs');
-const { initWasm, Resvg } = require('@resvg/resvg-wasm');
+const path = require('path');
+const { Resvg, initWasm } = require('@resvg/resvg-wasm');
 
 const INK = '#111';
 const BG = '#f6f3ea';
@@ -59,14 +59,14 @@ function decoyQr(seed, x, y, size) {
             }
         }
     };
-    find(0, 0); find(n - 7, 0); find(0, n - 7);
     for (let r = 0; r < n; r++) {
         for (let c = 0; c < n; c++) {
             const inFinder = (r < 7 && c < 7) || (r < 7 && c >= n - 7) || (r >= n - 7 && c < 7);
             if (inFinder) continue;
-            if (rnd() < 0.46) rects += `<rect x="${(x + c * cell).toFixed(1)}" y="${(y + r * cell).toFixed(1)}" width="${(cell + 0.4).toFixed(1)}" height="${(cell + 0.4).toFixed(1)}" fill="${INK}"/>`;
+            if (rnd() < 0.46) rects += `<rect x="${(x + c * cell + 0.4).toFixed(1)}" y="${(y + r * cell + 0.4).toFixed(1)}" width="${(cell - 0.2).toFixed(1)}" height="${(cell - 0.2).toFixed(1)}" fill="${INK}"/>`;
         }
     }
+    find(0, 0); find(n - 7, 0); find(0, n - 7);
     return `<rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${PAPER}"/><rect x="${(x + 2).toFixed(0)}" y="${(y + 2).toFixed(0)}" width="${size - 4}" height="${size - 4}" fill="${YELLOW}"/>${rects}`;
 }
 
@@ -94,7 +94,6 @@ function paymentCard(pay, setup) {
 <rect x="0" y="0" width="1200" height="18" fill="${INK}"/>
 <rect x="0" y="612" width="1200" height="18" fill="${INK}"/>
 ${decoyQr(qrSeed, qx, qy, qs)}
-<rect x="${qx + qs + 6}" y="${qy + qs + 2}" width="90" height="0" fill="none"/>
 <text x="40" y="64" font-family="${fontDis}" font-size="40" fill="${INK}">VANPAY</text>
 <rect x="40" y="82" width="196" height="10" fill="${YELLOW}"/>
 <text x="1035" y="58" font-family="${fontMono}" font-size="20" text-anchor="end" fill="${MUTED}">PAYMENT GATEWAY</text>
@@ -115,40 +114,21 @@ ${decoyQr(qrSeed, qx, qy, qs)}
 }
 
 function brandCard(setup) {
-    const base = (setup.base_url || '').replace(/^https?:\/\//, '').replace(/\/+$/, '');
+    const base = (setup.base_url || '').replace(/https?:\/\//, '').replace(/\/+$/, '');
     const fontDis = 'Archivo Black';
     const fontMono = 'Space Mono';
 
-    const qr = decoyQr('VANPAY:BRAND', 860, 200, 236);
-
     return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
 <rect width="1200" height="630" fill="${BG}"/>
-<line x1="0" y1="0" x2="1200" y2="0" stroke="${INK}" stroke-width="6"/>
-<line x1="0" y1="630" x2="1200" y2="630" stroke="${INK}" stroke-width="6"/>
-<circle cx="1124" cy="84" r="76" fill="#ff6fbe"/>
-<path d="M36 52 V24 H64 M1164 52 V24 H1136 M36 606 V578 H64 M1164 606 V578 H1136" stroke="${INK}" stroke-width="5" fill="none"/>
-<text x="40" y="116" font-family="${fontMono}" font-size="20" fill="${MUTED}">vanpay.sys / _brand</text>
-<circle cx="1140" cy="40" r="9" fill="#f87171" stroke="${INK}" stroke-width="3"/>
-<circle cx="1172" cy="40" r="9" fill="${YELLOW}" stroke="${INK}" stroke-width="3"/>
-<circle cx="1204" cy="40" r="9" fill="${MINT}" stroke="${INK}" stroke-width="3"/>
-<rect x="620" y="16" width="580" height="10" fill="${YELLOW}"/>
-<rect x="40" y="168" width="480" height="150" fill="${YELLOW}"/>
+<rect x="0" y="0" width="1200" height="18" fill="${INK}"/>
+<rect x="0" y="612" width="1200" height="18" fill="${INK}"/>
+<text x="40" y="116" font-family="${fontMono}" font-size="20" fill="${MUTED}">${esc(base)} · VANPAY</text>
+<rect x="40" y="164" width="480" height="150" fill="${YELLOW}"/>
 <text x="64" y="286" font-family="${fontDis}" font-size="138" fill="${INK}">VANPAY</text>
 <line x1="44" y1="352" x2="740" y2="352" stroke="${INK}" stroke-width="5"/>
-<text x="60" y="420" font-family="${fontMono}" font-size="24" fill="${INK}">Payment Gateway QRIS — top up saldo</text>
-<text x="60" y="456" font-family="${fontMono}" font-size="24" fill="${INK}">mendekati instan, tarik dana kapanpun.</text>
-<line x1="60" y1="520" x2="720" y2="520" stroke="${INK}" stroke-width="4"/>
+<text x="60" y="420" font-family="${fontMono}" font-size="24" fill="${INK}">Payment Gateway QRIS — top up saldo mendekati instan,</text>
+<text x="60" y="456" font-family="${fontMono}" font-size="24" fill="${INK}">tarik dana ke e-wallet favoritmu kapanpun.</text>
 <text x="60" y="562" font-family="${fontMono}" font-size="17" fill="${MUTED}">${esc(base)} · BEROPERASI 24/7</text>
-<g transform="rotate(3 940 350)">
-<rect x="760" y="140" width="360" height="380" rx="10" fill="${INK}"/>
-${qr}
-<text x="940" y="470" font-family="${fontMono}" font-size="20" text-anchor="middle" fill="${YELLOW}">SCAN &amp; TOP UP</text>
-<rect x="960" y="480" width="160" height="0" fill="none"/>
-</g>
-<g transform="rotate(-3 60 596)">
-<rect x="28" y="576" width="204" height="40" rx="4" fill="${MINT}" stroke="${INK}" stroke-width="3"/>
-<text x="130" y="602" font-family="${fontMono}" font-size="15" font-weight="bold" text-anchor="middle" fill="${INK}">QRIS · PAYMENT</text>
-</g>
 </svg>`;
 }
 
@@ -176,13 +156,8 @@ async function paymentPng(payment, setup) {
     return cached(key, 1000 * 60 * 60 * 24, () => render(paymentCard(payment, setup)));
 }
 
-const brandPngCache = {};
-async function brandPng(setup) {
-    const base = setup.base_url || '';
-    if (brandPngCache.png && brandPngCache.base === base) return brandPngCache.png;
-    brandPngCache.base = base;
-    brandPngCache.png = await render(brandCard(setup));
-    return brandPngCache.png;
+function brandPng(setup) {
+    return cached('brand', 1000 * 60 * 60 * 4, () => render(brandCard(setup)));
 }
 
 module.exports = { paymentCard, brandCard, paymentPng, brandPng };
