@@ -115,26 +115,57 @@ ${decoyQr(qrSeed, qx, qy, qs)}
 }
 
 function brandCard(setup) {
-    const base = (setup.base_url || '').replace(/https?:\/\//, '').replace(/\/+$/, '');
+    const base = (setup.base_url || '').replace(/^https?:\/\//, '').replace(/\/+$/, '');
     const fontDis = 'Archivo Black';
     const fontMono = 'Space Mono';
+    const year = new Date().getFullYear();
 
     return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
-<rect width="1200" height="630" fill="${YELLOW}"/>
-<rect width="1200" height="18" fill="${INK}"/>
-<rect x="0" y="612" width="1200" height="18" fill="${INK}"/>
-${decoyQr('VANPAY:BRAND', 900, 240, 264)}
-<rect x="0" y="0" width="1200" height="18" fill="${INK}"/>
-<text x="40" y="300" font-family="${fontDis}" font-size="150" fill="${INK}">VANPAY</text>
-<g transform="translate(44,340)">
-  <rect x="0" y="0" width="420" height="60" rx="6" fill="${INK}"/>
-  <text x="210" y="40" font-family="${fontMono}" font-size="24" text-anchor="middle" fill="${YELLOW}">PAYMENT GATEWAY QRIS</text>
+<rect width="1200" height="630" fill="${BG}"/>
+<rect x="0" y="0" width="1200" height="112" fill="${YELLOW}"/>
+<line x1="0" y1="112" x2="1200" y2="112" stroke="${INK}" stroke-width="4"/>
+<rect x="36" y="36" width="216" height="56" rx="6" fill="${INK}"/>
+<text x="52" y="76" font-family="${fontDis}" font-size="38" fill="${YELLOW}">VANPAY</text>
+<rect x="846" y="38" width="150" height="44" rx="4" fill="${INK}"/>
+<text x="921" y="67" font-family="${fontMono}" font-size="19" text-anchor="middle" fill="${PAPER}">Docs API</text>
+<rect x="1014" y="38" width="150" height="44" rx="4" fill="${INK}"/>
+<text x="1089" y="67" font-family="${fontMono}" font-size="19" text-anchor="middle" fill="${PAPER}">Masuk</text>
+<rect x="0" y="116" width="1200" height="30" fill="${YELLOW}"/>
+<text x="600" y="137" font-family="${fontMono}" font-size="17" text-anchor="middle" fill="${INK}">QRIS PAYMENT GATEWAY / DEPOSIT INSTAN / WITHDRAW / TERSEDIA 24/7</text>
+<rect x="0" y="146" width="1200" height="4" fill="${INK}"/>
+<rect x="40" y="186" width="316" height="40" rx="4" fill="${MINT}" stroke="${INK}" stroke-width="4"/>
+<text x="198" y="213" font-family="${fontMono}" font-size="21" text-anchor="middle" fill="${INK}">TOP UP QRIS · INSTAN</text>
+<text x="40" y="288" font-family="${fontDis}" font-size="64" fill="${INK}">BAYAR PAKAI</text>
+<text x="40" y="360" font-family="${fontDis}" font-size="64" fill="${INK}">QRIS <tspan fill="#ff6fbe">JADI</tspan></text>
+<text x="40" y="432" font-family="${fontDis}" font-size="64" fill="${INK}">GAMPANG.</text>
+<text x="40" y="486" font-family="${fontMono}" font-size="19" fill="#555">Platform pembayaran QRIS online. Deposit saldo via</text>
+<text x="40" y="512" font-family="${fontMono}" font-size="19" fill="#555">QRIS mendekati instan, tarik dana ke e-wallet-mu.</text>
+<rect x="40" y="545" width="232" height="52" rx="6" fill="${YELLOW}" stroke="${INK}" stroke-width="4"/>
+<text x="156" y="578" font-family="${fontMono}" font-size="20" font-weight="bold" text-anchor="middle" fill="${INK}">MASUK SEKARANG</text>
+<rect x="288" y="545" width="232" height="52" rx="6" fill="${PAPER}" stroke="${INK}" stroke-width="4"/>
+<text x="404" y="578" font-family="${fontMono}" font-size="20" font-weight="bold" text-anchor="middle" fill="${INK}">LIHAT DOCS API</text>
+<g transform="rotate(2 900 340)">
+<rect x="736" y="180" width="428" height="400" rx="8" fill="#4cc9f0" stroke="${INK}" stroke-width="4"/>
+<rect x="764" y="208" width="372" height="240" fill="${PAPER}" stroke="${INK}" stroke-width="4"/>
+<rect x="786" y="226" width="150" height="36" rx="4" fill="${INK}"/>
+<text x="798" y="251" font-family="${fontDis}" font-size="21" fill="${YELLOW}">VANPAY</text>
+<rect x="1026" y="228" width="88" height="32" rx="3" fill="${MINT}" stroke="${INK}" stroke-width="3"/>
+<text x="1070" y="250" font-family="${fontMono}" font-size="15" text-anchor="middle" fill="${INK}">QRIS</text>
+${decoyQr('VANPAY:HOME', 898, 276, 168)}
+<text x="786" y="472" font-family="${fontMono}" font-size="17" fill="${INK}">Saldo  <tspan font-family="${fontDis}" font-size="26" fill="${INK}">Rp10.000</tspan></text>
+<rect x="786" y="540" width="104" height="34" rx="3" fill="${PAPER}" stroke="${INK}" stroke-width="3"/>
+<text x="838" y="562" font-family="${fontMono}" font-size="14" text-anchor="middle" fill="${INK}">DANA</text>
+<rect x="902" y="540" width="104" height="34" rx="3" fill="${PAPER}" stroke="${INK}" stroke-width="3"/>
+<text x="954" y="562" font-family="${fontMono}" font-size="14" text-anchor="middle" fill="${INK}">GOPAY</text>
+<rect x="1018" y="540" width="120" height="34" rx="3" fill="${PAPER}" stroke="${INK}" stroke-width="3"/>
+<text x="1078" y="562" font-family="${fontMono}" font-size="14" text-anchor="middle" fill="${INK}">SHOPEEPAY</text>
 </g>
-<text x="44" y="434" font-family="${fontMono}" font-size="24" fill="${INK}">Top up saldo instan via QRIS · tarik dana ke</text>
-<text x="44" y="470" font-family="${fontMono}" font-size="24" fill="${INK}">DANA / GoPay / ShopeePay — aman, cepat, 24/7.</text>
-<line x1="44" y1="560" x2="1156" y2="560" stroke="${INK}" stroke-width="4"/>
-<rect x="44" y="574" width="16" height="16" fill="${INK}"/>
-<text x="72" y="590" font-family="${fontMono}" font-size="17" fill="${INK}">${esc(base)}</text>
+<g transform="rotate(-3 700 600)">
+<rect x="672" y="572" width="236" height="44" rx="4" fill="#ff6fbe" stroke="${INK}" stroke-width="3"/>
+<text x="790" y="600" font-family="${fontMono}" font-size="18" font-weight="bold" text-anchor="middle" fill="${INK}">NEARLY INSTANT</text>
+</g>
+<line x1="0" y1="604" x2="1200" y2="604" stroke="${INK}" stroke-width="4"/>
+<text x="600" y="622" font-family="${fontMono}" font-size="15" text-anchor="middle" fill="${INK}">© ${year} ${esc(setup.name || 'VANPAY')} — QRIS Payment Gateway · ${esc(base)}</text>
 </svg>`;
 }
 
